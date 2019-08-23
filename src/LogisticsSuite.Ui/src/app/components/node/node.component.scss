@@ -1,0 +1,133 @@
+.node {
+  width: 200px;
+  height: 200px;
+  margin: 50px 100px 100px 100px;
+  background-repeat: no-repeat;
+  background-size: 200px 200px;
+  background-position: center;
+
+  &.webShop {
+    background-image: url("../../../assets/online_shopping.svg");
+  }
+
+  &.erp {
+    background-image: url("../../../assets/building.svg");
+  }
+
+  &.callCenter {
+    background-image: url("../../../assets/calling.svg");
+  }
+
+  &.replenishment {
+    background-image: url("../../../assets/container_ship.svg");
+  }
+
+  &.warehouse {
+    background-image: url("../../../assets/logistics.svg");
+  }
+
+  &.dispatch {
+    background-image: url("../../../assets/suburbs.svg");
+  }
+}
+
+.delay-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+
+  .delay {
+    position: absolute;
+    width: 50px;
+    padding: 5px;
+    top: -100px;
+    left: 250px;
+    font-family: sans-serif;
+    font-size: xx-small;
+    text-align: right;
+  }
+}
+
+.buttons {
+  position: relative;
+  width: 0;
+  height: 0;
+
+  button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: black;
+    background: white;
+    border: none;
+
+    &:focus {
+      outline: 0;
+    }
+    &:hover {
+      background: #D20A0F;
+      color: white;
+    }
+  }
+
+  .is-1 {
+    position: absolute;
+    top: -100px;
+    left: 100px;
+  }
+
+  .is-2 {
+    position: absolute;
+    top: -100px;
+    left: 120px;
+  }
+}
+
+.link-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+
+  .link {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #D20A0F;
+    border-radius: 5px;
+
+    &.right {
+      @keyframes keyframe-ltr {
+        from { left: 300px; }
+        to { left: 490px; }
+      }
+      top: -200px;
+      animation: keyframe-ltr 1s linear infinite;
+
+      &.offset {
+        top: -190px;
+      }
+    }
+
+    &.left {
+      @keyframes keyframe-rtl {
+        from { left: 90px; }
+        to { left: -100px; }
+      }
+      top: -200px;
+      animation: keyframe-rtl 1s linear infinite;
+
+      &.offset {
+        top: -210px;
+      }
+    }
+
+    &.bottom {
+      @keyframes keyframe-ttb {
+        from { top: -120px; }
+        to { top: 70px; }
+      }
+      left: 200px;
+      animation: keyframe-ttb 1s linear infinite;
+    }
+  }
+}

@@ -1,0 +1,141 @@
+version: '3.7'
+
+services:
+
+  logisticssuite-backend:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.Backend
+    image: logisticssuite-backend:#{VERSION}#
+    ports:
+      - '6000:80'
+    depends_on:
+      - red01
+      - red02
+      - rmq
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-erp:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.Erp
+    image: logisticssuite-erp:#{VERSION}#
+    depends_on:
+      - logisticssuite-backend
+      - logisticssuite-webshop
+      - logisticssuite-callcenter
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-replenishment:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.Replenishment
+    image: logisticssuite-replenishment:#{VERSION}#
+    depends_on:
+      - logisticssuite-backend
+      - logisticssuite-warehouse
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-warehouse:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.Warehouse
+    image: logisticssuite-warehouse:#{VERSION}#
+    depends_on:
+      - logisticssuite-backend
+      - logisticssuite-erp
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-webshop:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.WebShop
+    image: logisticssuite-webshop:#{VERSION}#
+    depends_on:
+      - logisticssuite-backend
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-callcenter:
+    build:
+      context: ./src
+      args:
+        PROJECT: LogisticsSuite.CallCenter
+    image: logisticssuite-callcenter:#{VERSION}#
+    depends_on:
+      - logisticssuite-backend
+    environment:
+      - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - RabbitMq__Hostname=rmq
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  logisticssuite-ui:
+    build: ./src/LogisticsSuite.Ui
+    image: logisticssuite-ui:#{VERSION}#
+    ports:
+      - '6060:80'
+    depends_on:
+      - logisticssuite-backend
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+
+  red01:
+    image: redis:5.0
+
+  red02:
+    image: redis:5.0
+    command: redis-server --slaveof red01 6379
+
+  rmq:
+    environment:
+      - RABBITMQ_ERLANG_COOKIE='fsdjkhfa jhkdsfjasdhfjklhsda6 f7878sa7tf8s7af'
+    image: rabbitmq:3-management
+    hostname: rmq
+    volumes:
+      - rmqdata:/var/lib/rabbitmq/mnesia
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+volumes:
+  rmqdata:
+    driver: local

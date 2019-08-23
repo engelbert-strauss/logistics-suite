@@ -1,0 +1,11 @@
+{
+  "/logisticssuite.backend": {
+    "target": "http://localhost:6000",
+    "secure": false
+  },
+  "/logisticssuite.backend/ws": {
+    "target": "http://localhost:6000/ws",
+    "secure": false,
+    "ws": true
+  }
+}

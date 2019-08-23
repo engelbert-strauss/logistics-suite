@@ -1,0 +1,17 @@
+<div class="stocks">
+  <div *ngFor="let stock of stocks; let last = last">
+    <div
+      class="value"
+      [class.last]="last"
+      [class.is-90]="stock.quantity >= 90 && stock.quantity < 100"
+      [class.is-80]="stock.quantity >= 80 && stock.quantity < 90"
+      [class.is-70]="stock.quantity >= 70 && stock.quantity < 80"
+      [class.is-60]="stock.quantity >= 60 && stock.quantity < 70"
+      [class.is-50]="stock.quantity >= 50 && stock.quantity < 60"
+      [class.is-40]="stock.quantity >= 40 && stock.quantity < 50"
+      [class.is-30]="stock.quantity >= 30 && stock.quantity < 40"
+      [class.is-20]="stock.quantity >= 20 && stock.quantity < 30"
+      [class.is-10]="stock.quantity >= 10 && stock.quantity < 20"
+      [class.is-0]="stock.quantity < 10"></div>
+  </div>
+</div>

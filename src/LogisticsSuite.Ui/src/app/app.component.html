@@ -1,0 +1,16 @@
+<div class="flex-row">
+  <app-node icon="webShop" serviceId="WebOrderGeneration" right="onWebOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node icon="erp" serviceId="OrderGeneration" bottom="onOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node icon="callCenter" serviceId="CallOrderGeneration" left="onCallOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+</div>
+
+<div class="flex-row">
+  <app-node icon="replenishment" serviceId="Replenishment" right="onReplenished" rightOffset="true" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node icon="warehouse" serviceId="ParcelDispatch" left="onReplenishmentRequested" leftOffset="true" right="onParcelDispatched" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node icon="dispatch"></app-node>
+</div>
+
+<app-stocks></app-stocks>
+
+<app-queue headline="Orders" subject="onOrderQueueChanged"></app-queue>
+<app-queue headline="Parcels" subject="onParcelQueueChanged"></app-queue>

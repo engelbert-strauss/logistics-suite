@@ -1,0 +1,64 @@
+.stocks {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  .value {
+    //border-top: 1px solid #1A4178;
+    //border-left: 1px solid #1A4178;
+    //border-bottom: 1px solid #1A4178;
+    width: 50px;
+    height: 100px;
+    margin: 20px;
+    background: #65617D;
+
+    &.is-90 {
+      background: linear-gradient(#F2F2F2 10px, #65617D 10px, #65617D);
+    }
+
+    &.is-80 {
+      background: linear-gradient(#F2F2F2 20px, #65617D 20px, #65617D);
+    }
+
+    &.is-70 {
+      background: linear-gradient(#F2F2F2 30px, #65617D 30px, #65617D);
+    }
+
+    &.is-60 {
+      background: linear-gradient(#F2F2F2 40px, #92899D 40px, #92899D);
+    }
+
+    &.is-50 {
+      background: linear-gradient(#F2F2F2 50px, #92899D 50px, #92899D);
+    }
+
+    &.is-40 {
+      background: linear-gradient(#F2F2F2 60px, #92899D 60px, #92899D);
+    }
+
+    &.is-30 {
+      background: linear-gradient(#F2F2F2 70px, #FBE7E7 70px, #FBE7E7);
+    }
+
+    &.is-20 {
+      background: linear-gradient(#F2F2F2 80px, #FBE7E7 80px, #FBE7E7);
+    }
+
+    &.is-10 {
+      background: linear-gradient(#F2F2F2 90px, #FBE7E7 90px, #FBE7E7);
+    }
+
+    &.is-0 {
+      background: linear-gradient(#F2F2F2 99px, #FBE7E7 99px, #FBE7E7);
+    }
+
+    &.last {
+      //border-right: 1px solid #1A4178
+    }
+
+    &.low {
+      color: #A53860;
+      font-weight: bolder;
+    }
+  }
+}

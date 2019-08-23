@@ -1,0 +1,24 @@
+.queue {
+  display: flex;
+  justify-content: center;
+
+  .flex-container {
+    display: flex;
+    width: 860px;
+    justify-content: left;
+  }
+
+  .queue-headline {
+    width: 5px;
+    height: 40px;
+    background: #65617D;
+    margin: 1px;
+  }
+
+  .queue-item {
+    width: 5px;
+    height: 40px;
+    background: #F7D1D2;
+    margin: 1px;
+  }
+}
