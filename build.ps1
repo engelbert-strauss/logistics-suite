@@ -1,6 +1,15 @@
-$Version = "v0.3.0"
+[CmdletBinding()]
+Param(
+    [Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
+    [string[]]$ScriptArgs
+)
 
-$ComposeFile = Get-Content -Path "./docker-compose-template.yml" -Encoding UTF8
-$ComposeFile = $ComposeFile.Replace("#{VERSION}#", $Version)
-Set-Content -Path "./docker-compose.yml" -Value $ComposeFile -Encoding UTF8
-docker-compose.exe build --parallel
+If (Get-Command "dotnet-cake.exe" -ErrorAction SilentlyContinue) {
+    # Execute Cake
+    dotnet-cake $ScriptArgs
+} Else {
+    Write-Host "Warning: You need to install the dotnet tool ""Cake.Tool"" gobally."
+}
+
+# Return the exit code from Cake.
+Exit $LASTEXITCODE;
