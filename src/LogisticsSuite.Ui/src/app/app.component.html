@@ -1,6 +1,6 @@
 <div class="flex-row">
   <app-node icon="webShop" serviceId="WebOrderGeneration" right="onWebOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
-  <app-node icon="erp" serviceId="OrderGeneration" bottom="onOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node icon="erp" serviceId="ReleaseOrder" bottom="onOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
   <app-node icon="callCenter" serviceId="CallOrderGeneration" left="onCallOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
 </div>
 

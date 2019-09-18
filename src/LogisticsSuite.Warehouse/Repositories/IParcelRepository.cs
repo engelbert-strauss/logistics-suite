@@ -1,14 +1,13 @@
+using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Dtos;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IParcelRepository
 	{
-		ParcelDto Dequeue();
+		Task<ParcelDto> DequeueAsync();
 
-		void Enqueue(ParcelDto parcel);
-
-		int GetCount();
+		Task EnqueueAsync(ParcelDto parcel);
 
 		int GetNextParcelNo();
 	}

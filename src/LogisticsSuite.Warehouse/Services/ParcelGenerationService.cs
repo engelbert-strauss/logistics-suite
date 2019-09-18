@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LogisticsSuite.Warehouse.Services
 {
-	public class ParcelGenerationService : BatchService
+	public class ParcelGenerationService : BatchService, IParcelGenerationService
 	{
 		private readonly IConfiguration configuration;
 		private readonly IOrderRepository orderRepository;
@@ -31,27 +31,25 @@ namespace LogisticsSuite.Warehouse.Services
 			this.configuration = configuration;
 		}
 
-		protected override Task ExecuteInternalAsync(CancellationToken stoppingToken)
+		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
 			OrderDto order = orderRepository.Peek();
 
-			if (order != null && GenerateParcels(order))
+			if (order != null && await GenerateParcelsAsync(order).ConfigureAwait(false))
 			{
-				orderRepository.Dequeue();
+				await orderRepository.DequeueAsync().ConfigureAwait(false);
 			}
-
-			return Task.CompletedTask;
 		}
 
-		private void AbortOrder(List<ParcelDto> parcels)
+		private async Task AbortOrderAsync(List<ParcelDto> parcels)
 		{
 			foreach (ParcelItemDto parcelItem in parcels.SelectMany(x => x.ParcelItems))
 			{
-				stocksRepository.PutIn(parcelItem.ArticleNo, parcelItem.Quantity);
+				await stocksRepository.PutInAsync(parcelItem.ArticleNo, parcelItem.Quantity).ConfigureAwait(false);
 			}
 		}
 
-		private bool GenerateParcels(OrderDto order)
+		private async Task<bool> GenerateParcelsAsync(OrderDto order)
 		{
 			var orderItems = new Queue<OrderItemDto>(order.OrderItems);
 			var parcels = new List<ParcelDto>();
@@ -71,13 +69,13 @@ namespace LogisticsSuite.Warehouse.Services
 				{
 					OrderItemDto orderItem = orderItems.Dequeue();
 
-					if (stocksRepository.TakeOut(orderItem.ArticleNo, orderItem.Quantity))
+					if (await stocksRepository.TakeOutAsync(orderItem.ArticleNo, orderItem.Quantity).ConfigureAwait(false))
 					{
 						parcel.ParcelItems.Add(new ParcelItemDto { ArticleNo = orderItem.ArticleNo, Quantity = orderItem.Quantity });
 					}
 					else
 					{
-						AbortOrder(parcels);
+						await AbortOrderAsync(parcels).ConfigureAwait(false);
 
 						return false;
 					}
@@ -86,7 +84,7 @@ namespace LogisticsSuite.Warehouse.Services
 
 			foreach (ParcelDto parcel in parcels)
 			{
-				parcelRepository.Enqueue(parcel);
+				await parcelRepository.EnqueueAsync(parcel).ConfigureAwait(false);
 			}
 
 			return true;

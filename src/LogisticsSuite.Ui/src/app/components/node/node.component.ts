@@ -45,16 +45,16 @@ export class NodeComponent implements OnInit {
     }
 
     if (this.serviceId) {
-      this.signalRService.onDelayChanged$.subscribe((message) => {
-        let index = message.delay.randomDelays.findIndex((x) => x.service === this.serviceId);
+      this.signalRService.onDelayChanged$.subscribe((delay) => {
+        let index = delay.randomDelays.findIndex((x) => x.service === this.serviceId);
 
         if (index >= 0) {
-          this.delay = `${message.delay.randomDelays[index].minValue} / ${message.delay.randomDelays[index].maxValue}`;
+          this.delay = `${delay.randomDelays[index].minValue} / ${delay.randomDelays[index].maxValue}`;
         } else {
-          index = message.delay.periodicDelays.findIndex((x) => x.service === this.serviceId);
+          index = delay.periodicDelays.findIndex((x) => x.service === this.serviceId);
 
           if (index >= 0) {
-            this.delay = `${message.delay.periodicDelays[index].value}`;
+            this.delay = `${delay.periodicDelays[index].value}`;
           }
         }
       });

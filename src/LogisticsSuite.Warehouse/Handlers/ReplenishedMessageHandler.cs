@@ -11,11 +11,6 @@ namespace LogisticsSuite.Warehouse.Handlers
 
 		public ReplenishedMessageHandler(IStocksRepository stocksRepository) => this.stocksRepository = stocksRepository;
 
-		public Task HandleAsync(ReplenishedMessage message)
-		{
-			stocksRepository.Replenish(message.ArticleNo, message.Quantity);
-
-			return Task.CompletedTask;
-		}
+		public async Task HandleAsync(ReplenishedMessage message) => await stocksRepository.ReplenishAsync(message.ArticleNo, message.Quantity).ConfigureAwait(false);
 	}
 }

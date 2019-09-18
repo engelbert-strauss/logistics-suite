@@ -12,14 +12,12 @@ namespace LogisticsSuite.WebShop.Handlers
 		public DelayChangeRequestedMessageHandler(IWebOrderGenerationService webOrderGenerationService)
 			=> this.webOrderGenerationService = webOrderGenerationService;
 
-		public Task HandleAsync(DelayChangeRequestedMessage message)
+		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
 			if (message.DelayChangeRequest.Service == "webShop")
 			{
-				webOrderGenerationService.ChangeDelay(message.DelayChangeRequest.Action);
+				await webOrderGenerationService.ChangeDelayAsync(message.DelayChangeRequest.Action);
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

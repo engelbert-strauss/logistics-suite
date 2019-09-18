@@ -1,5 +1,6 @@
 ﻿using LogisticsSuite.Erp.Handlers;
 using LogisticsSuite.Erp.Repositories;
+using LogisticsSuite.Erp.Services;
 using LogisticsSuite.Infrastructure.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace LogisticsSuite.Erp
 				.Register<WebOrderReleasedMessage, WebOrderReleasedMessageHandler>()
 				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+			app.UseBatchServices();
 			app.UseMvc();
 		}
 
@@ -34,6 +36,7 @@ namespace LogisticsSuite.Erp
 		public void ConfigureServices(IServiceCollection services) => services
 			.AddInfrastructure(configuration)
 			.AddSingleton<IOrderRepository, OrderRepository>()
+			.AddBatchService<IReleaseOrderService, ReleaseOrderService>()
 			.AddTransient<WebOrderReleasedMessageHandler>()
 			.AddTransient<CallOrderReleasedMessageHandler>()
 			.AddTransient<DelayChangeRequestedMessageHandler>()

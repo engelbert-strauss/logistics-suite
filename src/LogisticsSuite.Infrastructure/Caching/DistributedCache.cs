@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using StackExchange.Redis;
 
 namespace LogisticsSuite.Infrastructure.Caching
@@ -8,15 +9,15 @@ namespace LogisticsSuite.Infrastructure.Caching
 
 		public DistributedCache(IConnectionMultiplexer connectionMultiplexer) => this.connectionMultiplexer = connectionMultiplexer;
 
-		public bool GetValue(string key, out int value)
+		public async Task<int?> GetValueAsync(string key)
 		{
 			try
 			{
-				RedisValue redisValue = connectionMultiplexer.GetDatabase().StringGet(key);
+				RedisValue redisValue = await connectionMultiplexer.GetDatabase().StringGetAsync(key).ConfigureAwait(false);
 
-				if (redisValue.HasValue && redisValue.TryParse(out value))
+				if (redisValue.HasValue && redisValue.TryParse(out int value))
 				{
-					return true;
+					return value;
 				}
 			}
 			catch
@@ -24,16 +25,14 @@ namespace LogisticsSuite.Infrastructure.Caching
 				// Ignore redis error.
 			}
 
-			value = default;
-
-			return false;
+			return null;
 		}
 
-		public void SetValue(string key, int value)
+		public async Task SetValueAsync(string key, int value)
 		{
 			try
 			{
-				connectionMultiplexer.GetDatabase().StringSet(key, value);
+				await connectionMultiplexer.GetDatabase().StringSetAsync(key, value).ConfigureAwait(false);
 			}
 			catch
 			{

@@ -2,7 +2,7 @@ using LogisticsSuite.Infrastructure.Services;
 
 namespace LogisticsSuite.CallCenter.Services
 {
-	public interface ICallOrderGenerationService : IDelayedService
+	public interface ICallOrderGenerationService : IBatchService
 	{
 	}
 }

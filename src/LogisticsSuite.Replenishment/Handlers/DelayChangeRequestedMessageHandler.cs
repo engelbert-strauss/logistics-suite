@@ -12,14 +12,12 @@ namespace LogisticsSuite.Replenishment.Handlers
 		public DelayChangeRequestedMessageHandler(IReplenishmentService replenishmentService)
 			=> this.replenishmentService = replenishmentService;
 
-		public Task HandleAsync(DelayChangeRequestedMessage message)
+		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
 			if (message.DelayChangeRequest.Service == "replenishment")
 			{
-				replenishmentService.ChangeDelay(message.DelayChangeRequest.Action);
+				await replenishmentService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

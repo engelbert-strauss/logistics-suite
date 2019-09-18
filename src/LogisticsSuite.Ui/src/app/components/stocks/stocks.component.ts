@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SignalRService} from '../../services/signalr.service';
 import {StocksDto} from '../../data/stocks-dto';
-import {StocksChangedMessage} from '../../data/stocks-changed-message';
 
 @Component({
   selector: 'app-stocks',
@@ -15,15 +14,15 @@ export class StocksComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.signalRService.onStocksChanged$.subscribe((message) => {
-      this.onStocksChanged(message);
+    this.signalRService.onStocksChanged$.subscribe((stocks) => {
+      this.onStocksChanged(stocks);
     });
 
     this.initializeStocks();
   }
 
-  private onStocksChanged(message: StocksChangedMessage) {
-    this.stocks = message.stocks;
+  private onStocksChanged(stocks: StocksDto[]) {
+    this.stocks = stocks;
   }
 
   private initializeStocks() {

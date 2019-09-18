@@ -12,14 +12,12 @@ namespace LogisticsSuite.Warehouse.Handlers
 		public DelayChangeRequestedMessageHandler(IParcelDispatchService parcelDispatchService)
 			=> this.parcelDispatchService = parcelDispatchService;
 
-		public Task HandleAsync(DelayChangeRequestedMessage message)
+		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
 			if (message.DelayChangeRequest.Service == "warehouse")
 			{
-				parcelDispatchService.ChangeDelay(message.DelayChangeRequest.Action);
+				await parcelDispatchService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

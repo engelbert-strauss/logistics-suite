@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LogisticsSuite.Warehouse.Services
 {
-	public class RequestReplenishmentService : BatchService
+	public class RequestReplenishmentService : BatchService, IRequestReplenishmentService
 	{
 		private readonly IMessageBroker messageBroker;
 		private readonly IReplenishmentRepository replenishmentRepository;

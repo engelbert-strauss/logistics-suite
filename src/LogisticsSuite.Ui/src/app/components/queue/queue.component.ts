@@ -15,12 +15,12 @@ export class QueueComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.signalRService.getSubjectByName(this.subject).subscribe((message) => {
-      this.onQueueChanged(message);
+    this.signalRService.getSubjectByName(this.subject).subscribe((count) => {
+      this.onQueueChanged(count);
     });
   }
 
-  private onQueueChanged(message: any) {
-    this.queueSize = Math.min(message.count, 122);
+  private onQueueChanged(count: number) {
+    this.queueSize = Math.min(count, 122);
   }
 }

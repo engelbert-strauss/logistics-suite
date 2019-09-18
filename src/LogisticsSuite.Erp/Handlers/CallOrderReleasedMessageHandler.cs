@@ -11,13 +11,8 @@ namespace LogisticsSuite.Erp.Handlers
 	public class CallOrderReleasedMessageHandler : IMessageHandler<CallOrderReleasedMessage>
 	{
 		private readonly IOrderRepository orderRepository;
-		private readonly IMessageBroker messageBroker;
 
-		public CallOrderReleasedMessageHandler(IMessageBroker messageBroker, IOrderRepository orderRepository)
-		{
-			this.messageBroker = messageBroker;
-			this.orderRepository = orderRepository;
-		}
+		public CallOrderReleasedMessageHandler(IOrderRepository orderRepository) => this.orderRepository = orderRepository;
 
 		public async Task HandleAsync(CallOrderReleasedMessage message)
 		{
@@ -25,7 +20,7 @@ namespace LogisticsSuite.Erp.Handlers
 			{
 				OrderItems = new List<OrderItemDto>(),
 				CustomerNo = message.CallOrder.CustomerNo,
-				OrderNo = await orderRepository.GetNextOrderNoAsync(),
+				OrderNo = orderRepository.GetNextOrderNo(),
 			};
 
 			order.OrderItems.AddRange(
@@ -36,7 +31,7 @@ namespace LogisticsSuite.Erp.Handlers
 						Quantity = x.Quantity,
 					}));
 
-			await messageBroker.PublishAsync(new OrderReleasedMessage { Order = order }).ConfigureAwait(false);
+			await orderRepository.EnqueueAsync(order).ConfigureAwait(false);
 		}
 	}
 }

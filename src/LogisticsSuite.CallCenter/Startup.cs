@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LogisticsSuite.CallCenter
@@ -27,15 +26,14 @@ namespace LogisticsSuite.CallCenter
 
 			app.UseMessaging()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
-
+			app.UseBatchServices();
 			app.UseMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) => services
 			.AddInfrastructure(configuration)
-			.AddSingleton<ICallOrderGenerationService, CallOrderGenerationService>()
-			.AddTransient<IHostedService>(x => x.GetService<ICallOrderGenerationService>())
+			.AddBatchService<ICallOrderGenerationService, CallOrderGenerationService>()
 			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 	}

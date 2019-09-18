@@ -1,14 +1,13 @@
+using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Dtos;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IOrderRepository
 	{
-		void Dequeue();
+		Task DequeueAsync();
 
-		void Enqueue(OrderDto parcel);
-
-		int GetCount();
+		Task Enqueue(OrderDto order);
 
 		OrderDto Peek();
 	}

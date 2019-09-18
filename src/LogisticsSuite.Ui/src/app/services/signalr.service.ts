@@ -5,12 +5,10 @@ import {ParcelDispatchedMessage} from '../data/parcel-dispatched-message';
 import {OrderReleasedMessage} from '../data/order-released-message';
 import {ReplenishedMessage} from '../data/replenished-message';
 import {ReplenishmentRequestedMessage} from '../data/replenishment-requested-message';
-import {StocksChangedMessage} from '../data/stocks-changed-message';
 import {WebOrderReleasedMessage} from '../data/web-order-released-message';
 import {CallOrderReleasedMessage} from '../data/call-order-released-message';
-import {ParcelQueueChangedMessage} from '../data/parce-queue-changed-message';
-import {OrderQueueChangedMessage} from '../data/order-queue-changed-message';
-import {DelayChangedMessage} from '../data/delay-changed-message';
+import {StocksDto} from '../data/stocks-dto';
+import {DelayDto} from '../data/delay-dto';
 
 @Injectable({providedIn: 'root'})
 export class SignalRService implements OnDestroy {
@@ -19,12 +17,12 @@ export class SignalRService implements OnDestroy {
   public onParcelDispatched$: Subject<ParcelDispatchedMessage> = new Subject<ParcelDispatchedMessage>();
   public onReplenished$: Subject<ReplenishedMessage> = new Subject<ReplenishedMessage>();
   public onReplenishmentRequested$: Subject<ReplenishmentRequestedMessage> = new Subject<ReplenishmentRequestedMessage>();
-  public onStocksChanged$: Subject<StocksChangedMessage> = new Subject<StocksChangedMessage>();
+  public onStocksChanged$: Subject<StocksDto[]> = new Subject<StocksDto[]>();
   public onWebOrderReleased$: Subject<WebOrderReleasedMessage> = new Subject<WebOrderReleasedMessage>();
   public onCallOrderReleased$: Subject<CallOrderReleasedMessage> = new Subject<CallOrderReleasedMessage>();
-  public onParcelQueueChanged$: Subject<ParcelQueueChangedMessage> = new Subject<ParcelQueueChangedMessage>();
-  public onOrderQueueChanged$: Subject<OrderQueueChangedMessage> = new Subject<OrderQueueChangedMessage>();
-  public onDelayChanged$: Subject<DelayChangedMessage> = new Subject<DelayChangedMessage>();
+  public onParcelQueueChanged$: Subject<number> = new Subject<number>();
+  public onOrderQueueChanged$: Subject<number> = new Subject<number>();
+  public onDelayChanged$: Subject<DelayDto> = new Subject<DelayDto>();
 
   private connection: HubConnection;
   private connected = false;
@@ -111,8 +109,8 @@ export class SignalRService implements OnDestroy {
       this.onReplenishmentRequested$.next(message);
     });
 
-    this.connection.on('OnStocksChangedMessageReceivedAsync', (message) => {
-      this.onStocksChanged$.next(message);
+    this.connection.on('OnStocksChangedAsync', (stocks) => {
+      this.onStocksChanged$.next(stocks);
     });
 
     this.connection.on('OnWebOrderReleasedMessageReceivedAsync', (message) => {
@@ -123,16 +121,16 @@ export class SignalRService implements OnDestroy {
       this.onCallOrderReleased$.next(message);
     });
 
-    this.connection.on('OnParcelQueueChangedMessageReceivedAsync', (message) => {
-      this.onParcelQueueChanged$.next(message);
+    this.connection.on('OnParcelQueueChangedAsync', (count) => {
+      this.onParcelQueueChanged$.next(count);
     });
 
-    this.connection.on('OnOrderQueueChangedMessageReceivedAsync', (message) => {
-      this.onOrderQueueChanged$.next(message);
+    this.connection.on('OnOrderQueueChangedAsync', (count) => {
+      this.onOrderQueueChanged$.next(count);
     });
 
-    this.connection.on('OnDelayChangedMessageReceivedAsync', (message) => {
-      this.onDelayChanged$.next(message);
+    this.connection.on('OnDelayChangedAsync', (delay) => {
+      this.onDelayChanged$.next(delay);
     });
 
   }

@@ -1,16 +1,13 @@
-using System.Collections.Generic;
-using LogisticsSuite.Infrastructure.Dtos;
+using System.Threading.Tasks;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IStocksRepository
 	{
-		IEnumerable<StocksDto> GetCurrentStocks();
+		Task PutInAsync(int articleNo, int quantity);
 
-		void PutIn(int articleNo, int quantity);
+		Task ReplenishAsync(int articleNo, int quantity);
 
-		void Replenish(int articleNo, int quantity);
-
-		bool TakeOut(int articleNo, int quantity);
+		Task<bool> TakeOutAsync(int articleNo, int quantity);
 	}
 }

@@ -1,11 +1,14 @@
 using System.Threading.Tasks;
+using LogisticsSuite.Infrastructure.Dtos;
 
 namespace LogisticsSuite.Erp.Repositories
 {
 	public interface IOrderRepository
 	{
-		void ChangeDelay(string action);
+		Task<OrderDto> DequeueAsync();
 
-		Task<int> GetNextOrderNoAsync();
+		Task EnqueueAsync(OrderDto order);
+
+		int GetNextOrderNo();
 	}
 }

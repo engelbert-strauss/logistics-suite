@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace LogisticsSuite.Infrastructure.Services
 {
-	public abstract class OrderGenerationService<T> : BackgroundService, IDelayedService
+	public abstract class OrderGenerationService<T> : BackgroundService, IBatchService
 	{
 		private readonly int[] articles;
 		private readonly IConfiguration configuration;
@@ -26,12 +26,11 @@ namespace LogisticsSuite.Infrastructure.Services
 			this.messageBroker = messageBroker;
 			this.configuration = configuration;
 			articles = configuration.GetSection("Random:Articles").Get<int[]>();
-			Initialize();
 		}
 
 		protected abstract string Name { get; }
 
-		public void ChangeDelay(string action)
+		public async Task ChangeDelayAsync(string action)
 		{
 			if (action == "increase")
 			{
@@ -47,8 +46,38 @@ namespace LogisticsSuite.Infrastructure.Services
 				max += 10;
 			}
 
-			distributedCache.SetValue(cacheKeyMin, min);
-			distributedCache.SetValue(cacheKeyMax, max);
+			await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
+			await distributedCache.SetValueAsync(cacheKeyMax, max).ConfigureAwait(false);
+		}
+
+		public async Task InitializeAsync()
+		{
+			cacheKeyMin = $"Delay:{Name}:Min";
+			cacheKeyMax = $"Delay:{Name}:Max";
+
+			int? cacheValue = await distributedCache.GetValueAsync(cacheKeyMin).ConfigureAwait(false);
+
+			if (cacheValue.HasValue)
+			{
+				min = cacheValue.Value;
+			}
+			else
+			{
+				min = configuration.GetValue<int>(cacheKeyMin);
+				await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
+			}
+
+			cacheValue = await distributedCache.GetValueAsync(cacheKeyMax).ConfigureAwait(false);
+
+			if (cacheValue.HasValue)
+			{
+				max = cacheValue.Value;
+			}
+			else
+			{
+				max = configuration.GetValue<int>(cacheKeyMax);
+				await distributedCache.SetValueAsync(cacheKeyMax, min).ConfigureAwait(false);
+			}
 		}
 
 		protected abstract T Create(int customerNo);
@@ -71,32 +100,6 @@ namespace LogisticsSuite.Infrastructure.Services
 		}
 
 		protected abstract void FillOrderItem(T message, int articleNo, int quantity);
-
-		private void Initialize()
-		{
-			cacheKeyMin = $"Delay:{Name}:Min";
-			cacheKeyMax = $"Delay:{Name}:Max";
-
-			if (distributedCache.GetValue(cacheKeyMin, out int value))
-			{
-				min = value;
-			}
-			else
-			{
-				min = configuration.GetValue<int>(cacheKeyMin);
-				distributedCache.SetValue(cacheKeyMin, min);
-			}
-
-			if (distributedCache.GetValue(cacheKeyMax, out value))
-			{
-				max = value;
-			}
-			else
-			{
-				max = configuration.GetValue<int>(cacheKeyMax);
-				distributedCache.SetValue(cacheKeyMax, max);
-			}
-		}
 
 		private Task ReleaseCallOrder()
 		{

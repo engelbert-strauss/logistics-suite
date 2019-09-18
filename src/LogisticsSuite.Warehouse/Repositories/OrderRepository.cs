@@ -1,17 +1,28 @@
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public class OrderRepository : IOrderRepository
 	{
+		private readonly IDistributedCache distributedCache;
 		private readonly ConcurrentQueue<OrderDto> orders = new ConcurrentQueue<OrderDto>();
 
-		public void Dequeue() => orders.TryDequeue(out OrderDto _);
+		public OrderRepository(IDistributedCache distributedCache) => this.distributedCache = distributedCache;
 
-		public void Enqueue(OrderDto parcel) => orders.Enqueue(parcel);
+		public async Task DequeueAsync()
+		{
+			orders.TryDequeue(out OrderDto _);
+			await distributedCache.SetValueAsync("Warehouse.OrderQueue", orders.Count).ConfigureAwait(false);
+		}
 
-		public int GetCount() => orders.Count;
+		public async Task Enqueue(OrderDto order)
+		{
+			orders.Enqueue(order);
+			await distributedCache.SetValueAsync("Warehouse.OrderQueue", orders.Count).ConfigureAwait(false);
+		}
 
 		public OrderDto Peek() => orders.TryPeek(out OrderDto order) ? order : null;
 	}

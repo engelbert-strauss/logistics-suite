@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LogisticsSuite.Replenishment
@@ -29,6 +28,7 @@ namespace LogisticsSuite.Replenishment
 			app.UseMessaging()
 				.Register<ReplenishmentRequestedMessage, ReplenishmentRequestedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+			app.UseBatchServices();
 			app.UseMvc();
 		}
 
@@ -38,8 +38,7 @@ namespace LogisticsSuite.Replenishment
 			.AddTransient<ReplenishmentRequestedMessageHandler>()
 			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddSingleton<IRequestRepository, RequestRepository>()
-			.AddSingleton<IReplenishmentService, ReplenishmentService>()
-			.AddTransient<IHostedService>(x => x.GetService<IReplenishmentService>())
+			.AddBatchService<IReplenishmentService, ReplenishmentService>()
 			.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 	}
 }

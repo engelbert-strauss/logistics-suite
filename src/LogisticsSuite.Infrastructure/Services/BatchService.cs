@@ -7,33 +7,52 @@ using Microsoft.Extensions.Hosting;
 
 namespace LogisticsSuite.Infrastructure.Services
 {
-	public abstract class BatchService : BackgroundService, IDelayedService
+	public abstract class BatchService : BackgroundService, IBatchService
 	{
 		private readonly string cacheKey;
 		private readonly IConfiguration configuration;
+		private readonly string configurationKey;
 		private readonly IDistributedCache distributedCache;
-		private int delay;
+		private int? delay;
 
 		protected BatchService(IConfiguration configuration, IDistributedCache distributedCache)
 		{
 			this.distributedCache = distributedCache;
 			this.configuration = configuration;
 			cacheKey = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
-			delay = InitializeDelay();
+			configurationKey = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
 		}
 
-		public void ChangeDelay(string action)
+		public async Task ChangeDelayAsync(string action)
 		{
-			if (action == "increase")
+			if (delay.HasValue)
 			{
-				delay = Math.Max(0, delay - 10);
-			}
-			else if (action == "decrease")
-			{
-				delay += 10;
-			}
+				if (action == "increase")
+				{
+					delay = Math.Max(0, delay.Value - 10);
+				}
+				else if (action == "decrease")
+				{
+					delay += 10;
+				}
 
-			distributedCache.SetValue(cacheKey, delay);
+				await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
+			}
+		}
+
+		public async Task InitializeAsync()
+		{
+			int? cacheValue = await distributedCache.GetValueAsync(cacheKey).ConfigureAwait(false);
+
+			if (cacheValue.HasValue)
+			{
+				delay = cacheValue.Value;
+			}
+			else
+			{
+				delay = configuration.GetValue<int>(configurationKey);
+				await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
+			}
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -49,23 +68,10 @@ namespace LogisticsSuite.Infrastructure.Services
 					// Retry forever.
 				}
 
-				await Task.Delay(TimeSpan.FromMilliseconds(delay), stoppingToken).ConfigureAwait(false);
+				await Task.Delay(TimeSpan.FromMilliseconds(delay ?? 1000), stoppingToken).ConfigureAwait(false);
 			}
 		}
 
 		protected abstract Task ExecuteInternalAsync(CancellationToken stoppingToken);
-
-		private int InitializeDelay()
-		{
-			if (distributedCache.GetValue(cacheKey, out int value))
-			{
-				return value;
-			}
-
-			value = configuration.GetValue<int>(cacheKey);
-			distributedCache.SetValue(cacheKey, value);
-
-			return value;
-		}
 	}
 }

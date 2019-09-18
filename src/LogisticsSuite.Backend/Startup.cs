@@ -1,5 +1,6 @@
 ﻿using LogisticsSuite.Dispatch.Handlers;
 using LogisticsSuite.Dispatch.Hubs;
+using LogisticsSuite.Dispatch.Services;
 using LogisticsSuite.Infrastructure.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,12 +29,9 @@ namespace LogisticsSuite.Dispatch
 				.Register<ParcelDispatchedMessage, ParcelDispatchedMessageHandler>()
 				.Register<ReplenishedMessage, ReplenishedMessageHandler>()
 				.Register<ReplenishmentRequestedMessage, ReplenishmentRequestedMessageHandler>()
-				.Register<StocksChangedMessage, StocksChangedMessageHandler>()
 				.Register<WebOrderReleasedMessage, WebOrderReleasedMessageHandler>()
-				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>()
-				.Register<ParcelQueueChangedMessage, ParcelQueueChangedMessageHandler>()
-				.Register<OrderQueueChangedMessage, OrderQueueChangedMessageHandler>()
-				.Register<DelayChangedMessage, DelayChangedMessageHandler>();
+				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>();
+			app.UseBatchServices();
 			app.UseSignalR(routes => routes.MapHub<MonitorHub>("/ws"));
 			app.UseMvc();
 		}
@@ -47,14 +45,11 @@ namespace LogisticsSuite.Dispatch
 				.AddTransient<ParcelDispatchedMessageHandler>()
 				.AddTransient<ReplenishedMessageHandler>()
 				.AddTransient<ReplenishmentRequestedMessageHandler>()
-				.AddTransient<StocksChangedMessageHandler>()
 				.AddTransient<WebOrderReleasedMessageHandler>()
 				.AddTransient<CallOrderReleasedMessageHandler>()
-				.AddTransient<ParcelQueueChangedMessageHandler>()
-				.AddTransient<OrderQueueChangedMessageHandler>()
-				.AddTransient<DelayChangedMessageHandler>();
+				.AddBatchService<IMonitoringService, MonitoringService>();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			services.AddSignalR().AddJsonProtocol().AddStackExchangeRedis(configuration["RedisConnection:ConnectionString"]);
+			services.AddSignalR().AddJsonProtocol();
 		}
 	}
 }

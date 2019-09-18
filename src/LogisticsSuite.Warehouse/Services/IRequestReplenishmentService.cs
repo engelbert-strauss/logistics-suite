@@ -2,7 +2,7 @@ using LogisticsSuite.Infrastructure.Services;
 
 namespace LogisticsSuite.Warehouse.Services
 {
-	public interface IParcelDispatchService : IBatchService
+	public interface IRequestReplenishmentService : IBatchService
 	{
 	}
 }

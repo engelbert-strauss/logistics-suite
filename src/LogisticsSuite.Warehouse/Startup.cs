@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LogisticsSuite.Warehouse
@@ -30,6 +29,7 @@ namespace LogisticsSuite.Warehouse
 				.Register<OrderReleasedMessage, OrderReleasedMessageHandler>()
 				.Register<ReplenishedMessage, ReplenishedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+			app.UseBatchServices();
 			app.UseMvc();
 		}
 
@@ -43,11 +43,9 @@ namespace LogisticsSuite.Warehouse
 			.AddSingleton<IParcelRepository, ParcelRepository>()
 			.AddSingleton<IOrderRepository, OrderRepository>()
 			.AddSingleton<IReplenishmentRepository, ReplenishmentRepository>()
-			.AddSingleton<IParcelDispatchService, ParcelDispatchService>()
-			.AddTransient<IHostedService>(x => x.GetService<IParcelDispatchService>())
-			.AddHostedService<ParcelGenerationService>()
-			.AddHostedService<MonitoringService>()
-			.AddHostedService<RequestReplenishmentService>()
+			.AddBatchService<IParcelDispatchService, ParcelDispatchService>()
+			.AddBatchService<IParcelGenerationService, ParcelGenerationService>()
+			.AddBatchService<IRequestReplenishmentService, RequestReplenishmentService>()
 			.AddMvc()
 			.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 	}

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LogisticsSuite.Erp.Repositories;
+using LogisticsSuite.Erp.Services;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 
@@ -7,19 +7,17 @@ namespace LogisticsSuite.Erp.Handlers
 {
 	public class DelayChangeRequestedMessageHandler : IMessageHandler<DelayChangeRequestedMessage>
 	{
-		private readonly IOrderRepository orderRepository;
+		private readonly IReleaseOrderService releaseOrderService;
 
-		public DelayChangeRequestedMessageHandler(IOrderRepository orderRepository)
-			=> this.orderRepository = orderRepository;
+		public DelayChangeRequestedMessageHandler(IReleaseOrderService releaseOrderService)
+			=> this.releaseOrderService = releaseOrderService;
 
-		public Task HandleAsync(DelayChangeRequestedMessage message)
+		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
 			if (message.DelayChangeRequest.Service == "erp")
 			{
-				orderRepository.ChangeDelay(message.DelayChangeRequest.Action);
+				await releaseOrderService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

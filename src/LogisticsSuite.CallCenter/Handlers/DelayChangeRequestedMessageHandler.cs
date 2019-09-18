@@ -12,14 +12,12 @@ namespace LogisticsSuite.CallCenter.Handlers
 		public DelayChangeRequestedMessageHandler(ICallOrderGenerationService callOrderGenerationService)
 			=> this.callOrderGenerationService = callOrderGenerationService;
 
-		public Task HandleAsync(DelayChangeRequestedMessage message)
+		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
 			if (message.DelayChangeRequest.Service == "callCenter")
 			{
-				callOrderGenerationService.ChangeDelay(message.DelayChangeRequest.Action);
+				await callOrderGenerationService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

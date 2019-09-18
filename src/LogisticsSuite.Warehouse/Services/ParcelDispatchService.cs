@@ -28,7 +28,7 @@ namespace LogisticsSuite.Warehouse.Services
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
-			ParcelDto parcel = parcelRepository.Dequeue();
+			ParcelDto parcel = await parcelRepository.DequeueAsync().ConfigureAwait(false);
 
 			if (parcel != null)
 			{
