@@ -60,10 +60,10 @@ export class NodeComponent implements OnInit {
       });
     }
 
-    /*this.delay = '100 / 500';
+    this.delay = '100 / 500';
     this.ltr.push('');
     this.rtl.push('');
-    this.ttb.push('');*/
+    this.ttb.push('');
   }
 
   public onMinusClicked(): void {

@@ -1,10 +1,26 @@
+$factor: 1.5;
+
 .node {
-  width: 200px;
-  height: 200px;
-  margin: 50px 100px 100px 100px;
+  $width: 200px;
+  $height: 200px;
+  $margin-top: 50px;
+  $margin-right: 100px;
+  $margin-bottom: 100px;
+  $margin-left: 100px;
+
+  width: $width;
+  height: $height;
+  margin: $margin-top $margin-right $margin-bottom $margin-left;
   background-repeat: no-repeat;
-  background-size: 200px 200px;
+  background-size: $width $height;
   background-position: center;
+
+  @media screen and (min-width: 2560px) {
+    width: calc(#{$width} * #{$factor});
+    height: calc(#{$height} * #{$factor});
+    margin: calc(#{$margin-top} * #{$factor}) calc(#{$margin-right} * #{$factor}) calc(#{$margin-bottom} * #{$factor}) calc(#{$margin-left} * #{$factor});
+    background-size: calc(#{$width} * #{$factor}) calc(#{$height} * #{$factor});
+  }
 
   &.webShop {
     background-image: url("../../../assets/online_shopping.svg");
@@ -37,14 +53,27 @@
   height: 0;
 
   .delay {
+    $width: 50px;
+    $padding: 5px;
+    $top: -100px;
+    $left: 250px;
+
     position: absolute;
-    width: 50px;
-    padding: 5px;
-    top: -100px;
-    left: 250px;
+    width: $width;
+    padding: $padding;
+    top: $top;
+    left: $left;
     font-family: sans-serif;
     font-size: xx-small;
     text-align: right;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+      padding: calc(#{$padding} * #{$factor});
+      top: calc(#{$top} * #{$factor});
+      left: calc(#{$left} * #{$factor});
+      font-size: small;
+    }
   }
 }
 
@@ -54,12 +83,21 @@
   height: 0;
 
   button {
+    $width: 20px;
+    $height: 20px;
+
     width: 20px;
     height: 20px;
     padding: 0;
     color: black;
     background: white;
     border: none;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+      height: calc(#{$height} * #{$factor});
+      font-size: large;
+    }
 
     &:focus {
       outline: 0;
@@ -71,15 +109,31 @@
   }
 
   .is-1 {
+    $top: -100px;
+    $left: 100px;
+
     position: absolute;
-    top: -100px;
-    left: 100px;
+    top: $top;
+    left: $left;
+
+    @media screen and (min-width: 2560px) {
+      top: calc(#{$top} * #{$factor});
+      left: calc(#{$left} * #{$factor});
+    }
   }
 
   .is-2 {
+    $top: -100px;
+    $left: 120px;
+
     position: absolute;
-    top: -100px;
-    left: 120px;
+    top: $top;
+    left: $left;
+
+    @media screen and (min-width: 2560px) {
+      top: calc(#{$top} * #{$factor});
+      left: calc(#{$left} * #{$factor});
+    }
   }
 }
 
@@ -89,45 +143,112 @@
   height: 0;
 
   .link {
+    $width: 10px;
+    $height: 10px;
+    $border-radius: 5px;
+
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: $width;
+    height: $height;
     background: #D20A0F;
-    border-radius: 5px;
+    border-radius: $border-radius;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+      height: calc(#{$height} * #{$factor});
+      border-radius: calc(#{$border-radius} * #{$factor});
+    }
 
     &.right {
-      @keyframes keyframe-ltr {
-        from { left: 300px; }
-        to { left: 490px; }
-      }
-      top: -200px;
+      $top: -200px;
+      $start: 300px;
+      $end: 490px;
+
+      top: $top;
       animation: keyframe-ltr 1s linear infinite;
 
+      @keyframes keyframe-ltr {
+        from { left: $start; }
+        to { left: $end; }
+      }
+
+      @keyframes keyframe-ltr-big {
+        from { left: calc(#{$start} * #{$factor}); }
+        to { left: calc(#{$end} * #{$factor}); }
+      }
+
+      @media screen and (min-width: 2560px) {
+        top: calc(#{$top} * #{$factor});
+        animation: keyframe-ltr-big 1s linear infinite;
+      }
+
       &.offset {
-        top: -190px;
+        $top: -190px;
+
+        top: $top;
+
+        @media screen and (min-width: 2560px) {
+          top: calc(#{$top} * #{$factor});
+        }
       }
     }
 
     &.left {
-      @keyframes keyframe-rtl {
-        from { left: 90px; }
-        to { left: -100px; }
-      }
-      top: -200px;
+      $top: -200px;
+      $start: 90px;
+      $end: -100px;
+
+      top: $top;
       animation: keyframe-rtl 1s linear infinite;
 
+      @keyframes keyframe-rtl {
+        from { left: $start; }
+        to { left: $end; }
+      }
+
+      @keyframes keyframe-rtl-big {
+        from { left: calc(#{$start} * #{$factor}); }
+        to { left: calc(#{$end} * #{$factor}); }
+      }
+
+      @media screen and (min-width: 2560px) {
+        top: calc(#{$top} * #{$factor});
+        animation: keyframe-rtl-big 1s linear infinite;
+      }
+
       &.offset {
-        top: -210px;
+        $top: -210px;
+
+        top: $top;
+
+        @media screen and (min-width: 2560px) {
+          top: calc(#{$top} * #{$factor});
+        }
       }
     }
 
     &.bottom {
-      @keyframes keyframe-ttb {
-        from { top: -120px; }
-        to { top: 70px; }
-      }
-      left: 200px;
+      $left: 200px;
+      $start: -120px;
+      $end: 70px;
+
+      left: $left;
       animation: keyframe-ttb 1s linear infinite;
+
+      @keyframes keyframe-ttb {
+        from { top: $start; }
+        to { top: $end; }
+      }
+
+      @keyframes keyframe-ttb-big {
+        from { top: calc(#{$start} * #{$factor}); }
+        to { top: calc(#{$end} * #{$factor}); }
+      }
+
+      @media screen and (min-width: 2560px) {
+        left: calc(#{$left} * #{$factor});
+        animation: keyframe-ttb-big 1s linear infinite;
+      }
     }
   }
 }

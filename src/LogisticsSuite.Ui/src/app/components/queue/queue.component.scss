@@ -1,24 +1,52 @@
+$factor: 1.5;
+
 .queue {
   display: flex;
   justify-content: center;
 
   .flex-container {
+    $width: 860;
+
     display: flex;
-    width: 860px;
+    width: $width;
     justify-content: left;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+    }
   }
 
   .queue-headline {
-    width: 5px;
-    height: 40px;
+    $width: 5px;
+    $height: 40px;
+    $margin: 1px;
+
+    width: $width;
+    height: $height;
     background: #65617D;
-    margin: 1px;
+    margin: $margin;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+      height: calc(#{$height} * #{$factor});
+      margin: calc(#{$margin} * #{$factor});
+    }
   }
 
   .queue-item {
-    width: 5px;
-    height: 40px;
+    $width: 5px;
+    $height: 40px;
+    $margin: 1px;
+
+    width: $width;
+    height: $height;
     background: #F7D1D2;
-    margin: 1px;
+    margin: $margin;
+
+    @media screen and (min-width: 2560px) {
+      width: calc(#{$width} * #{$factor});
+      height: calc(#{$height} * #{$factor});
+      margin: calc(#{$margin} * #{$factor});
+    }
   }
 }
