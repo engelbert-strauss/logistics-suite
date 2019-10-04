@@ -7,7 +7,7 @@ import {SignalRService} from '../../services/signalr.service';
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent implements OnInit {
-  public queueSize = 122;
+  public queueSize = 0;
   @Input() public headline: string;
   @Input() public subject: string;
 
