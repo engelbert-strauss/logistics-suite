@@ -22,48 +22,117 @@ $factor: 1.5;
     }
 
     &.is-90 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.1), #65617D calc(#{height} * 0.1), #65617D);
+      $percent: 0.1;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #65617D calc(#{$base} * #{$percent}), #65617D);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #65617D calc(#{$base} *  #{$percent}), #65617D);
+      }
     }
 
     &.is-80 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.2), #65617D calc(#{height} * 0.2), #65617D);
+      $percent: 0.2;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #65617D calc(#{$base} * #{$percent}), #65617D);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #65617D calc(#{$base} *  #{$percent}), #65617D);
+      }
     }
 
     &.is-70 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.3), #65617D calc(#{height} * 0.3), #65617D);
+      $percent: 0.3;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #92899D calc(#{$base} * #{$percent}), #92899D);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #92899D calc(#{$base} *  #{$percent}), #92899D);
+      }
     }
 
     &.is-60 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.4), #92899D calc(#{height} * 0.4), #92899D);
+      $percent: 0.4;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #92899D calc(#{$base} * #{$percent}), #92899D);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #92899D calc(#{$base} *  #{$percent}), #92899D);
+      }
     }
 
     &.is-50 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.5), #92899D calc(#{height} * 0.5), #92899D);
+      $percent: 0.5;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #92899D calc(#{$base} * #{$percent}), #92899D);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #92899D calc(#{$base} *  #{$percent}), #92899D);
+      }
     }
 
     &.is-40 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.6), #92899D calc(#{height} * 0.6), #92899D);
+      $percent: 0.6;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #FBE7E7 calc(#{$base} * #{$percent}), #FBE7E7);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #FBE7E7 calc(#{$base} *  #{$percent}), #FBE7E7);
+      }
     }
 
     &.is-30 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.7), #FBE7E7 calc(#{height} * 0.7), #FBE7E7);
+      $percent: 0.7;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #FBE7E7 calc(#{$base} * #{$percent}), #FBE7E7);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #FBE7E7 calc(#{$base} *  #{$percent}), #FBE7E7);
+      }
     }
 
     &.is-20 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.8), #FBE7E7 calc(#{height} * 0.8), #FBE7E7);
+      $percent: 0.8;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #FBE7E7 calc(#{$base} * #{$percent}), #FBE7E7);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #FBE7E7 calc(#{$base} *  #{$percent}), #FBE7E7);
+      }
     }
 
     &.is-10 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.9), #FBE7E7 calc(#{height} * 0.9), #FBE7E7);
+      $percent: 0.9;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #FBE7E7 calc(#{$base} * #{$percent}), #FBE7E7);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #FBE7E7 calc(#{$base} *  #{$percent}), #FBE7E7);
+      }
     }
 
     &.is-0 {
-      background: linear-gradient(#F2F2F2 calc(#{height} * 0.99), #FBE7E7 calc(#{height} * 0.99), #FBE7E7);
+      $percent: 0.99;
+      $base: $height;
+      background: linear-gradient(#F2F2F2 calc(#{$base} * #{$percent}), #FBE7E7 calc(#{$base} * #{$percent}), #FBE7E7);
+
+      @media screen and (min-width: 2560px) {
+        $base: calc(#{$height} * #{$factor});
+        background: linear-gradient(#F2F2F2 calc(#{$base} *  #{$percent}), #FBE7E7 calc(#{$base} *  #{$percent}), #FBE7E7);
+      }
     }
 
     &.low {
       color: #A53860;
-      font-weight: bolder;
     }
   }
 }
