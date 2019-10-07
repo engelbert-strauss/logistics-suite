@@ -71,6 +71,10 @@ export class NodeComponent implements OnInit {
           }
         }
       });
+
+      if (this.debugMode) {
+        this.delay = '100 / 500';
+      }
     }
   }
 
