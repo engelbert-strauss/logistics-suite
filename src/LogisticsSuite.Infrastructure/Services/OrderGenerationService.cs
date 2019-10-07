@@ -54,30 +54,10 @@ namespace LogisticsSuite.Infrastructure.Services
 		{
 			cacheKeyMin = $"Delay:{Name}:Min";
 			cacheKeyMax = $"Delay:{Name}:Max";
-
-			int? cacheValue = await distributedCache.GetValueAsync(cacheKeyMin).ConfigureAwait(false);
-
-			if (cacheValue.HasValue)
-			{
-				min = cacheValue.Value;
-			}
-			else
-			{
-				min = configuration.GetValue<int>(cacheKeyMin);
-				await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
-			}
-
-			cacheValue = await distributedCache.GetValueAsync(cacheKeyMax).ConfigureAwait(false);
-
-			if (cacheValue.HasValue)
-			{
-				max = cacheValue.Value;
-			}
-			else
-			{
-				max = configuration.GetValue<int>(cacheKeyMax);
-				await distributedCache.SetValueAsync(cacheKeyMax, min).ConfigureAwait(false);
-			}
+			min = configuration.GetValue<int>(cacheKeyMin);
+			await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
+			max = configuration.GetValue<int>(cacheKeyMax);
+			await distributedCache.SetValueAsync(cacheKeyMax, max).ConfigureAwait(false);
 		}
 
 		protected abstract T Create(int customerNo);

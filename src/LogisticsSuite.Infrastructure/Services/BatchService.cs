@@ -42,17 +42,8 @@ namespace LogisticsSuite.Infrastructure.Services
 
 		public async Task InitializeAsync()
 		{
-			int? cacheValue = await distributedCache.GetValueAsync(cacheKey).ConfigureAwait(false);
-
-			if (cacheValue.HasValue)
-			{
-				delay = cacheValue.Value;
-			}
-			else
-			{
-				delay = configuration.GetValue<int>(configurationKey);
-				await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
-			}
+			delay = configuration.GetValue<int>(configurationKey);
+			await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
