@@ -12,6 +12,7 @@ export class NodeComponent implements OnInit {
   public rtl: any[] = [];
   public ttb: any[] = [];
   public delay: string = null;
+  @Input() public debugMode = false;
   @Input() public serviceId: string = null;
   @Input() public icon: string;
   @Input() public right: string = null;
@@ -30,18 +31,30 @@ export class NodeComponent implements OnInit {
       this.signalRService.getSubjectByName(this.right).subscribe((message) => {
         this.onLtrLinkAdded(message);
       });
+
+      if (this.debugMode) {
+        this.ltr.push('');
+      }
     }
 
     if (this.left) {
       this.signalRService.getSubjectByName(this.left).subscribe((message) => {
         this.onRtlLinkAdded(message);
       });
+
+      if (this.debugMode) {
+        this.rtl.push('');
+      }
     }
 
     if (this.bottom) {
       this.signalRService.getSubjectByName(this.bottom).subscribe((message) => {
         this.onTtbLinkAdded(message);
       });
+
+      if (this.debugMode) {
+        this.ttb.push('');
+      }
     }
 
     if (this.serviceId) {
@@ -81,21 +94,21 @@ export class NodeComponent implements OnInit {
 
   private onLtrLinkAdded(message: any) {
     this.ltr.push(message);
-    setTimeout( () => {
+    setTimeout(() => {
       this.ltr.shift();
     }, 1000);
   }
 
   private onRtlLinkAdded(message: any) {
     this.rtl.push(message);
-    setTimeout( () => {
+    setTimeout(() => {
       this.rtl.shift();
     }, 1000);
   }
 
   private onTtbLinkAdded(message: any) {
     this.ttb.push(message);
-    setTimeout( () => {
+    setTimeout(() => {
       this.ttb.shift();
     }, 1000);
   }

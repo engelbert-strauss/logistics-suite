@@ -9,13 +9,15 @@ import {HttpClientModule} from '@angular/common/http';
 import {NodeComponent} from './components/node/node.component';
 import {StocksComponent} from './components/stocks/stocks.component';
 import {QueueComponent} from './components/queue/queue.component';
+import {SuiteComponent} from './components/suite/suite.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NodeComponent,
     StocksComponent,
-    QueueComponent
+    QueueComponent,
+    SuiteComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-$factor: 1.5;
+$factor: 1.75;
 
 .node {
   $width: 200px;
@@ -10,7 +10,10 @@ $factor: 1.5;
 
   width: $width;
   height: $height;
-  margin: $margin-top $margin-right $margin-bottom $margin-left;
+  margin-top: $margin-top;
+  margin-right: $margin-right;
+  margin-bottom: $margin-bottom;
+  margin-left: $margin-left;
   background-repeat: no-repeat;
   background-size: $width $height;
   background-position: center;
@@ -18,7 +21,10 @@ $factor: 1.5;
   @media screen and (min-width: 2560px) {
     width: calc(#{$width} * #{$factor});
     height: calc(#{$height} * #{$factor});
-    margin: calc(#{$margin-top} * #{$factor}) calc(#{$margin-right} * #{$factor}) calc(#{$margin-bottom} * #{$factor}) calc(#{$margin-left} * #{$factor});
+    margin-top: calc(#{$margin-top} * #{$factor});
+    margin-right: calc(#{$margin-right} * #{$factor});
+    margin-bottom: calc(#{$margin-bottom} * #{$factor});
+    margin-left: calc(#{$margin-left} * #{$factor});
     background-size: calc(#{$width} * #{$factor}) calc(#{$height} * #{$factor});
   }
 
@@ -44,6 +50,10 @@ $factor: 1.5;
 
   &.dispatch {
     background-image: url("../../../assets/suburbs.svg");
+  }
+
+  &.last-row {
+    margin-bottom: 0;
   }
 }
 

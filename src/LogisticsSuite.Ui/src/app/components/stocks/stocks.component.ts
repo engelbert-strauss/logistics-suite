@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SignalRService} from '../../services/signalr.service';
 import {StocksDto} from '../../data/stocks-dto';
 
@@ -9,6 +9,7 @@ import {StocksDto} from '../../data/stocks-dto';
 })
 export class StocksComponent implements OnInit {
   public stocks: StocksDto[] = [];
+  @Input() public debugMode = false;
 
   constructor(private signalRService: SignalRService) {
   }
@@ -27,12 +28,17 @@ export class StocksComponent implements OnInit {
 
   private initializeStocks() {
     let i: number;
+    let quantity = 100;
 
-    for (i = 101001; i <= 101010; i++ ) {
+    for (i = 101001; i <= 101010; i++) {
       const dto = new StocksDto();
 
       dto.articleNo = i;
-      dto.quantity = 100;
+      dto.quantity = quantity;
+
+      if (this.debugMode) {
+        quantity -= 10;
+      }
 
       this.stocks.push(dto);
     }

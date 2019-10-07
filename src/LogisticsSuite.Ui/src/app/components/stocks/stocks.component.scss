@@ -1,4 +1,5 @@
 $factor: 1.5;
+$margin-factor: 0.75;
 
 .stocks {
   display: flex;
@@ -18,7 +19,13 @@ $factor: 1.5;
     @media screen and (min-width: 2560px) {
       width: calc(#{$width} * #{$factor});
       height: calc(#{$height} * #{$factor});
-      margin: calc(#{$margin} * #{$factor});
+      margin: calc(#{$margin} * #{$margin-factor});
+    }
+
+    &.last {
+      @media screen and (min-width: 2560px) {
+        margin-right: 50px;
+      }
     }
 
     &.is-90 {
