@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace LogisticsSuite.Dispatch
+namespace LogisticsSuite.Backend
 {
 	public static class Program
 	{

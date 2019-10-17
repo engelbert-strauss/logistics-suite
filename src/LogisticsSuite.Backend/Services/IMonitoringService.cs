@@ -1,6 +1,6 @@
 using LogisticsSuite.Infrastructure.Services;
 
-namespace LogisticsSuite.Dispatch.Services
+namespace LogisticsSuite.Backend.Services
 {
 	public interface IMonitoringService : IBatchService
 	{

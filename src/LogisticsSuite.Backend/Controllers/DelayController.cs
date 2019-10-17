@@ -4,7 +4,7 @@ using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LogisticsSuite.Dispatch.Controllers
+namespace LogisticsSuite.Backend.Controllers
 {
 	[ApiController]
 	[Route("delay")]

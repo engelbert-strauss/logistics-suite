@@ -3,8 +3,6 @@ using LogisticsSuite.Erp.Repositories;
 using LogisticsSuite.Erp.Services;
 using LogisticsSuite.Infrastructure.Messages;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,19 +15,13 @@ namespace LogisticsSuite.Erp
 		public Startup(IConfiguration configuration) => this.configuration = configuration;
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-
 			app.UseMessaging()
 				.Register<WebOrderReleasedMessage, WebOrderReleasedMessageHandler>()
 				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
 			app.UseBatchServices();
-			app.UseMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -39,7 +31,6 @@ namespace LogisticsSuite.Erp
 			.AddBatchService<IReleaseOrderService, ReleaseOrderService>()
 			.AddTransient<WebOrderReleasedMessageHandler>()
 			.AddTransient<CallOrderReleasedMessageHandler>()
-			.AddTransient<DelayChangeRequestedMessageHandler>()
-			.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			.AddTransient<DelayChangeRequestedMessageHandler>();
 	}
 }

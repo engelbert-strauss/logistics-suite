@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-sdk AS restore
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS restore
 ARG PROJECT
 WORKDIR /app
 COPY ./${PROJECT}/${PROJECT}.csproj ./${PROJECT}/
@@ -13,7 +13,7 @@ COPY ./LogisticsSuite.Infrastructure/. ./LogisticsSuite.Infrastructure/
 WORKDIR /app/${PROJECT}/
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
 ARG PROJECT
 WORKDIR /app
 COPY --from=publish /app/${PROJECT}/out .

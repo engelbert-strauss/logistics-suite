@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace LogisticsSuite.Dispatch.Hubs
+namespace LogisticsSuite.Backend.Hubs
 {
 	public class MonitorHub : Hub<IMonitorHub>
 	{

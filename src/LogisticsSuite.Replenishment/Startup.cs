@@ -3,11 +3,8 @@ using LogisticsSuite.Replenishment.Handlers;
 using LogisticsSuite.Replenishment.Repositories;
 using LogisticsSuite.Replenishment.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LogisticsSuite.Replenishment
 {
@@ -18,18 +15,12 @@ namespace LogisticsSuite.Replenishment
 		public Startup(IConfiguration configuration) => this.configuration = configuration;
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-
 			app.UseMessaging()
 				.Register<ReplenishmentRequestedMessage, ReplenishmentRequestedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
 			app.UseBatchServices();
-			app.UseMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -38,7 +29,6 @@ namespace LogisticsSuite.Replenishment
 			.AddTransient<ReplenishmentRequestedMessageHandler>()
 			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddSingleton<IRequestRepository, RequestRepository>()
-			.AddBatchService<IReplenishmentService, ReplenishmentService>()
-			.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			.AddBatchService<IReplenishmentService, ReplenishmentService>();
 	}
 }

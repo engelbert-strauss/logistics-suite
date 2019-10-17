@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 
-namespace LogisticsSuite.Dispatch.Hubs
+namespace LogisticsSuite.Backend.Hubs
 {
 	public interface IMonitorHub
 	{

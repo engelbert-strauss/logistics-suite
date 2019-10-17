@@ -51,7 +51,7 @@ namespace LogisticsSuite.Infrastructure.Messaging
 				channel.ExchangeDeclare(typeof(TMessage).FullName, "fanout");
 
 				QueueDeclareOk queueName = channel.QueueDeclare(
-					typeof(TMessage).FullName + "." + serviceProvider.GetService<IHostingEnvironment>().ApplicationName,
+					typeof(TMessage).FullName + "." + serviceProvider.GetService<IHostEnvironment>().ApplicationName,
 					true,
 					false,
 					false,

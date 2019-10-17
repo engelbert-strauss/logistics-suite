@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using LogisticsSuite.Dispatch.Hubs;
+using LogisticsSuite.Backend.Hubs;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 using Microsoft.AspNetCore.SignalR;
 
-namespace LogisticsSuite.Dispatch.Handlers
+namespace LogisticsSuite.Backend.Handlers
 {
 	public class ParcelDispatchedMessageHandler : IMessageHandler<ParcelDispatchedMessage>
 	{

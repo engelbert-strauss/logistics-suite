@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using LogisticsSuite.Dispatch.Hubs;
+using LogisticsSuite.Backend.Hubs;
 using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 
-namespace LogisticsSuite.Dispatch.Services
+namespace LogisticsSuite.Backend.Services
 {
 	public class MonitoringService : BatchService, IMonitoringService
 	{
