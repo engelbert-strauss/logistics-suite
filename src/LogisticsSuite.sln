@@ -1,21 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.Backend", "LogisticsSuite.Backend\LogisticsSuite.Backend.csproj", "{E5FF34DF-3BE5-45AB-BE82-B295D76A43C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.Backend", "LogisticsSuite.Backend\LogisticsSuite.Backend.csproj", "{E5FF34DF-3BE5-45AB-BE82-B295D76A43C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.Erp", "LogisticsSuite.Erp\LogisticsSuite.Erp.csproj", "{8A4BE5A8-3E95-42AA-99DD-42EBD0955C4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.Erp", "LogisticsSuite.Erp\LogisticsSuite.Erp.csproj", "{8A4BE5A8-3E95-42AA-99DD-42EBD0955C4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.Infrastructure", "LogisticsSuite.Infrastructure\LogisticsSuite.Infrastructure.csproj", "{97B3863C-7502-46EE-A0DE-7DE996784D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.Infrastructure", "LogisticsSuite.Infrastructure\LogisticsSuite.Infrastructure.csproj", "{97B3863C-7502-46EE-A0DE-7DE996784D48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.Replenishment", "LogisticsSuite.Replenishment\LogisticsSuite.Replenishment.csproj", "{9721C1AE-C056-4BD7-BAD7-98917E3668E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.Replenishment", "LogisticsSuite.Replenishment\LogisticsSuite.Replenishment.csproj", "{9721C1AE-C056-4BD7-BAD7-98917E3668E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.Warehouse", "LogisticsSuite.Warehouse\LogisticsSuite.Warehouse.csproj", "{EDC3C3DB-A48C-4FE6-8A49-14AA6EC69726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.Warehouse", "LogisticsSuite.Warehouse\LogisticsSuite.Warehouse.csproj", "{EDC3C3DB-A48C-4FE6-8A49-14AA6EC69726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.WebShop", "LogisticsSuite.WebShop\LogisticsSuite.WebShop.csproj", "{E4519887-A55D-4E14-B5C6-D0446F4E6072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.WebShop", "LogisticsSuite.WebShop\LogisticsSuite.WebShop.csproj", "{E4519887-A55D-4E14-B5C6-D0446F4E6072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogisticsSuite.CallCenter", "LogisticsSuite.CallCenter\LogisticsSuite.CallCenter.csproj", "{B1EC9501-6BCE-435F-81DA-5128E49C1B96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogisticsSuite.CallCenter", "LogisticsSuite.CallCenter\LogisticsSuite.CallCenter.csproj", "{B1EC9501-6BCE-435F-81DA-5128E49C1B96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional Files", "Additional Files", "{38B419BB-5BFC-4AF4-8205-80C471345A4B}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		..\.editorconfig = ..\.editorconfig
+		CodeAnalyzers.ruleset = CodeAnalyzers.ruleset
+		Directory.Build.props = Directory.Build.props
+		..\docker-compose-template.yml = ..\docker-compose-template.yml
+		Dockerfile = Dockerfile
+		LogisticsSuite.sln.DotSettings = LogisticsSuite.sln.DotSettings
+		stylecop.json = stylecop.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +37,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E5FF34DF-3BE5-45AB-BE82-B295D76A43C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -114,5 +123,11 @@ Global
 		{B1EC9501-6BCE-435F-81DA-5128E49C1B96}.Release|x64.Build.0 = Release|Any CPU
 		{B1EC9501-6BCE-435F-81DA-5128E49C1B96}.Release|x86.ActiveCfg = Release|Any CPU
 		{B1EC9501-6BCE-435F-81DA-5128E49C1B96}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7121A80A-AC54-4205-BC28-CF034785E6F7}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -12,10 +12,10 @@ namespace LogisticsSuite.Infrastructure.Messaging
 		private readonly Lazy<IModel> channel;
 		private readonly ILogger logger;
 
-		public MessageBroker(IBusConnection busConnection, ILogger<MessageBroker> logger)
+		public MessageBroker(IConnection connection, ILogger<MessageBroker> logger)
 		{
 			this.logger = logger;
-			channel = new Lazy<IModel>(busConnection.Get().CreateModel);
+			channel = new Lazy<IModel>(connection.CreateModel);
 		}
 
 		public void Dispose()

@@ -9,9 +9,8 @@ namespace LogisticsSuite.Infrastructure.Services
 {
 	public abstract class BatchService : BackgroundService, IBatchService
 	{
-		private readonly string cacheKey;
+		private readonly string key;
 		private readonly IConfiguration configuration;
-		private readonly string configurationKey;
 		private readonly IDistributedCache distributedCache;
 		private int? delay;
 
@@ -19,8 +18,7 @@ namespace LogisticsSuite.Infrastructure.Services
 		{
 			this.distributedCache = distributedCache;
 			this.configuration = configuration;
-			cacheKey = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
-			configurationKey = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
+			key = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
 		}
 
 		public async Task ChangeDelayAsync(string action)
@@ -36,14 +34,14 @@ namespace LogisticsSuite.Infrastructure.Services
 					delay += 10;
 				}
 
-				await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
+				await distributedCache.SetValueAsync(key, delay.Value).ConfigureAwait(false);
 			}
 		}
 
 		public async Task InitializeAsync()
 		{
-			delay = configuration.GetValue<int>(configurationKey);
-			await distributedCache.SetValueAsync(cacheKey, delay.Value).ConfigureAwait(false);
+			delay = configuration.GetValue<int>(key);
+			await distributedCache.SetValueAsync(key, delay.Value).ConfigureAwait(false);
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)

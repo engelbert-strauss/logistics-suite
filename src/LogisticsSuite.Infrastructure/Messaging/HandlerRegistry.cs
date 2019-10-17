@@ -12,14 +12,14 @@ namespace LogisticsSuite.Infrastructure.Messaging
 {
 	public class HandlerRegistry : IHandlerRegistry
 	{
-		private readonly IBusConnection busConnection;
+		private readonly IConnection connection;
 		private readonly List<IBasicConsumer> consumers = new List<IBasicConsumer>();
 		private readonly ILogger logger;
 		private readonly IServiceProvider serviceProvider;
 
-		public HandlerRegistry(IBusConnection busConnection, IServiceProvider serviceProvider, ILogger<HandlerRegistry> logger)
+		public HandlerRegistry(IConnection connection, IServiceProvider serviceProvider, ILogger<HandlerRegistry> logger)
 		{
-			this.busConnection = busConnection;
+			this.connection = connection;
 			this.serviceProvider = serviceProvider;
 			this.logger = logger;
 		}
@@ -46,7 +46,7 @@ namespace LogisticsSuite.Infrastructure.Messaging
 		{
 			try
 			{
-				IModel channel = busConnection.Get().CreateModel();
+				IModel channel = connection.CreateModel();
 
 				channel.ExchangeDeclare(typeof(TMessage).FullName, "fanout");
 
