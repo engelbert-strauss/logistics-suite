@@ -4,11 +4,23 @@ Param(
     [string[]]$ScriptArgs
 )
 
+$CakeVersion = "0.33.0"
+
 If (Get-Command "dotnet-cake.exe" -ErrorAction SilentlyContinue) {
     # Execute Cake
     dotnet-cake $ScriptArgs
 } Else {
-    Write-Host "Warning: You need to install the dotnet tool ""Cake.Tool"" gobally."
+     # Create the tools folder.
+     $Tools = Join-Path $PSScriptRoot "tools"
+     if (!(Test-Path $Tools)) {
+         New-Item -Path $Tools -ItemType Directory | Out-Null
+     }
+
+     # Install Cake
+     &dotnet "tool" "install" "Cake.Tool" "--version=$CakeVersion" "--tool-path=$Tools"
+
+     # Execute Cake
+     &"$Tools\dotnet-cake" $ScriptArgs
 }
 
 # Return the exit code from Cake.
