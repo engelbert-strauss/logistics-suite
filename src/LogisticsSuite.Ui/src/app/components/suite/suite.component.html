@@ -1,13 +1,13 @@
 <div class="flex-row">
-  <app-node [debugMode]="debugMode" icon="webShop" serviceId="WebOrderGeneration" right="onWebOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
-  <app-node [debugMode]="debugMode" icon="erp" serviceId="ReleaseOrder" bottom="onOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
-  <app-node [debugMode]="debugMode" icon="callCenter" serviceId="CallOrderGeneration" left="onCallOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.WebShop" serviceId="WebOrderGeneration" right="onWebOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.Erp" serviceId="ReleaseOrder" bottom="onOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.CallCenter" serviceId="CallOrderGeneration" left="onCallOrderReleased" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
 </div>
 
 <div class="flex-row">
-  <app-node [debugMode]="debugMode" icon="replenishment" serviceId="Replenishment" right="onReplenished" rightOffset="true" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
-  <app-node [debugMode]="debugMode" icon="warehouse" serviceId="ParcelDispatch" left="onReplenishmentRequested" leftOffset="true" right="onParcelDispatched" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
-  <app-node [debugMode]="debugMode" icon="dispatch"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.Replenishment" serviceId="Replenishment" right="onReplenished" rightOffset="true" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.Warehouse" serviceId="ParcelDispatch" left="onReplenishmentRequested" leftOffset="true" right="onParcelDispatched" buttons="Both" (delayChanged)="onDelayChanged($event)"></app-node>
+  <app-node [debugMode]="debugMode" [name]="ServiceName.Dispatch"></app-node>
 </div>
 
 <div class="conditional-flex-row">

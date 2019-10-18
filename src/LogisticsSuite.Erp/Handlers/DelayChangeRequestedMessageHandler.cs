@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using LogisticsSuite.Erp.Services;
+using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 
@@ -14,9 +15,9 @@ namespace LogisticsSuite.Erp.Handlers
 
 		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
-			if (message.DelayChangeRequest.Service == "erp")
+			if (message.DelayChangeRequest.ServiceName == ServiceName.Erp)
 			{
-				await releaseOrderService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
+				await releaseOrderService.ChangeDelayAsync(message.DelayChangeRequest.OperationMode).ConfigureAwait(false);
 			}
 		}
 	}

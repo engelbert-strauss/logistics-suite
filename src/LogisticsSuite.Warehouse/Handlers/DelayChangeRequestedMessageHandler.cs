@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 using LogisticsSuite.Warehouse.Services;
@@ -14,9 +15,9 @@ namespace LogisticsSuite.Warehouse.Handlers
 
 		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
-			if (message.DelayChangeRequest.Service == "warehouse")
+			if (message.DelayChangeRequest.ServiceName == ServiceName.Warehouse)
 			{
-				await parcelDispatchService.ChangeDelayAsync(message.DelayChangeRequest.Action).ConfigureAwait(false);
+				await parcelDispatchService.ChangeDelayAsync(message.DelayChangeRequest.OperationMode).ConfigureAwait(false);
 			}
 		}
 	}

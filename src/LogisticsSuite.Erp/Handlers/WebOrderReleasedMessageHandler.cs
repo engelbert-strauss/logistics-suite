@@ -24,7 +24,7 @@ namespace LogisticsSuite.Erp.Handlers
 			};
 
 			order.OrderItems.AddRange(
-				message.WebOrder.WebOrderItems.Select(
+				message.WebOrder.OrderItems.Select(
 					x => new OrderItemDto
 					{
 						ArticleNo = x.ArticleNo,

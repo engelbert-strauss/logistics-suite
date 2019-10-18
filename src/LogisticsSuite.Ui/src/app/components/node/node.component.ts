@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SignalRService} from '../../services/signalr.service';
 import {DelayChangedEvent} from '../../data/delay-changed-event';
+import {ServiceName} from '../../data/service-name';
+import {OperationMode} from '../../data/operation-mode';
 
 @Component({
   selector: 'app-node',
@@ -14,7 +16,7 @@ export class NodeComponent implements OnInit {
   public delay: string = null;
   @Input() public debugMode = false;
   @Input() public serviceId: string = null;
-  @Input() public icon: string;
+  @Input() public name: ServiceName;
   @Input() public right: string = null;
   @Input() public left: string = null;
   @Input() public bottom: string = null;
@@ -81,8 +83,8 @@ export class NodeComponent implements OnInit {
   public onMinusClicked(): void {
     const event = new DelayChangedEvent();
 
-    event.service = this.icon;
-    event.action = 'decrease';
+    event.serviceName = this.name;
+    event.operationMode = OperationMode.Decrease;
 
     this.delayChanged.emit(event);
   }
@@ -90,10 +92,14 @@ export class NodeComponent implements OnInit {
   public onPlusClicked(): void {
     const event = new DelayChangedEvent();
 
-    event.service = this.icon;
-    event.action = 'increase';
+    event.serviceName = this.name;
+    event.operationMode = OperationMode.Increase;
 
     this.delayChanged.emit(event);
+  }
+
+  public getName() {
+    return ServiceName[this.name];
   }
 
   private onLtrLinkAdded(message: any) {

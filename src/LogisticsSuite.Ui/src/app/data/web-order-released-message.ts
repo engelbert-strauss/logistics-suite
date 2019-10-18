@@ -1,5 +1,5 @@
-import {WebOrderDto} from './web-order-dto';
+import {OrderDto} from './order-dto';
 
 export class WebOrderReleasedMessage {
-  public webOrder: WebOrderDto;
+  public webOrder: OrderDto;
 }

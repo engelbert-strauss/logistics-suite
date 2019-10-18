@@ -2,8 +2,8 @@ namespace LogisticsSuite.Infrastructure.Dtos
 {
 	public class DelayChangeRequestDto
 	{
-		public string Action { get; set; }
+		public OperationMode OperationMode { get; set; }
 
-		public string Service { get; set; }
+		public ServiceName ServiceName { get; set; }
 	}
 }

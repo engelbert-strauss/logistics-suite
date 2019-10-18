@@ -1,5 +1,5 @@
-import {CallOrderDto} from './call-order-dto';
+import {OrderDto} from './order-dto';
 
 export class CallOrderReleasedMessage {
-  public callOrder: CallOrderDto;
+  public callOrder: OrderDto;
 }

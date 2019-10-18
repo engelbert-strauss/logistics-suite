@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BackendService} from '../../services/backend.service';
 import {DelayChangedEvent} from '../../data/delay-changed-event';
 import {ActivatedRoute} from '@angular/router';
+import {ServiceName} from '../../data/service-name';
 
 @Component({
   selector: 'app-suite',
@@ -11,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 export class SuiteComponent implements OnInit {
   public debugMode = false;
   public maxQueueSize = 80;
+  public ServiceName = ServiceName;
 
   constructor(private backendService: BackendService, private route: ActivatedRoute) {
   }

@@ -29,27 +29,27 @@ $message-factor: 2.0;
     background-size: calc(#{$width} * #{$factor}) calc(#{$height} * #{$factor});
   }
 
-  &.webShop {
+  &.WebShop {
     background-image: url("../../../assets/online_shopping.svg");
   }
 
-  &.erp {
+  &.Erp {
     background-image: url("../../../assets/building.svg");
   }
 
-  &.callCenter {
+  &.CallCenter {
     background-image: url("../../../assets/calling.svg");
   }
 
-  &.replenishment {
+  &.Replenishment {
     background-image: url("../../../assets/container_ship.svg");
   }
 
-  &.warehouse {
+  &.Warehouse {
     background-image: url("../../../assets/logistics.svg");
   }
 
-  &.dispatch {
+  &.Dispatch {
     background-image: url("../../../assets/suburbs.svg");
   }
 

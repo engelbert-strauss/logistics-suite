@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using LogisticsSuite.Backend.Handlers;
 using LogisticsSuite.Backend.Hubs;
 using LogisticsSuite.Backend.Services;
@@ -5,6 +6,7 @@ using LogisticsSuite.Infrastructure.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -18,6 +20,7 @@ namespace LogisticsSuite.Backend
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.UseRewriter(new RewriteOptions().AddRewrite(@"^logisticssuite.backend/(.*)", "$1", true));
 			}
 
 			app.UseMessaging()
@@ -29,7 +32,12 @@ namespace LogisticsSuite.Backend
 				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>();
 			app.UseBatchServices();
 			app.UseRouting();
-			app.UseEndpoints(endpoints => { endpoints.MapHub<MonitorHub>("/ws"); });
+			app.UseEndpoints(
+				endpoints =>
+				{
+					endpoints.MapControllers();
+					endpoints.MapHub<MonitorHub>("/ws");
+				});
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -44,7 +52,9 @@ namespace LogisticsSuite.Backend
 				.AddTransient<WebOrderReleasedMessageHandler>()
 				.AddTransient<CallOrderReleasedMessageHandler>()
 				.AddBatchService<IMonitoringService, MonitoringService>();
-			services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+			services.AddControllers()
+				.AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 			services.AddSignalR().AddJsonProtocol();
 		}
 	}

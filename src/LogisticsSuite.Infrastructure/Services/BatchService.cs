@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Caching;
+using LogisticsSuite.Infrastructure.Dtos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -21,15 +22,15 @@ namespace LogisticsSuite.Infrastructure.Services
 			key = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
 		}
 
-		public async Task ChangeDelayAsync(string action)
+		public async Task ChangeDelayAsync(OperationMode operationMode)
 		{
 			if (delay.HasValue)
 			{
-				if (action == "increase")
+				if (operationMode == OperationMode.Increase)
 				{
 					delay = Math.Max(0, delay.Value - 10);
 				}
-				else if (action == "decrease")
+				else if (operationMode == OperationMode.Decrease)
 				{
 					delay += 10;
 				}

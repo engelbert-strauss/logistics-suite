@@ -1,4 +1,7 @@
+import {OperationMode} from './operation-mode';
+import {ServiceName} from './service-name';
+
 export class DelayChangedEvent {
-  public service: string;
-  public action: string;
+  public serviceName: ServiceName;
+  public operationMode: OperationMode;
 }

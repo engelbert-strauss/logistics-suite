@@ -19,14 +19,14 @@ namespace LogisticsSuite.CallCenter.Services
 
 		protected override CallOrderReleasedMessage Create(int customerNo) => new CallOrderReleasedMessage
 		{
-			CallOrder = new CallOrderDto
+			CallOrder = new OrderDto
 			{
 				CustomerNo = customerNo,
-				CallOrderItems = new List<CallOrderItemDto>(),
+				OrderItems = new List<OrderItemDto>(),
 			},
 		};
 
 		protected override void FillOrderItem(CallOrderReleasedMessage message, int articleNo, int quantity) =>
-			message.CallOrder.CallOrderItems.Add(new CallOrderItemDto { ArticleNo = articleNo, Quantity = quantity });
+			message.CallOrder.OrderItems.Add(new OrderItemDto { ArticleNo = articleNo, Quantity = quantity });
 	}
 }

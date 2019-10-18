@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Caching;
+using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -30,9 +31,9 @@ namespace LogisticsSuite.Infrastructure.Services
 
 		protected abstract string Name { get; }
 
-		public async Task ChangeDelayAsync(string action)
+		public async Task ChangeDelayAsync(OperationMode operationMode)
 		{
-			if (action == "increase")
+			if (operationMode == OperationMode.Increase)
 			{
 				if (min > 10 && max > 10)
 				{
@@ -40,7 +41,7 @@ namespace LogisticsSuite.Infrastructure.Services
 					max -= 10;
 				}
 			}
-			else if (action == "decrease")
+			else if (operationMode == OperationMode.Decrease)
 			{
 				min += 10;
 				max += 10;

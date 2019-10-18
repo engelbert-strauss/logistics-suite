@@ -1,4 +1,4 @@
-<div [class]="'node ' + icon"></div>
+<div [class]="'node ' + getName()"></div>
 <div *ngFor="let _ of ltr" class="link-anchor"><div class="link right" [class.offset]="rightOffset"></div></div>
 <div *ngFor="let _ of rtl" class="link-anchor"><div class="link left" [class.offset]="leftOffset"></div></div>
 <div *ngFor="let _ of ttb" class="link-anchor"><div class="link bottom"></div></div>

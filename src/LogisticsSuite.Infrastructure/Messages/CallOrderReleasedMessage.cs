@@ -4,6 +4,6 @@ namespace LogisticsSuite.Infrastructure.Messages
 {
 	public class CallOrderReleasedMessage
 	{
-		public CallOrderDto CallOrder { get; set; }
+		public OrderDto CallOrder { get; set; }
 	}
 }

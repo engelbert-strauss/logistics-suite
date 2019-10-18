@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 using LogisticsSuite.WebShop.Services;
@@ -14,9 +15,9 @@ namespace LogisticsSuite.WebShop.Handlers
 
 		public async Task HandleAsync(DelayChangeRequestedMessage message)
 		{
-			if (message.DelayChangeRequest.Service == "webShop")
+			if (message.DelayChangeRequest.ServiceName == ServiceName.WebShop)
 			{
-				await webOrderGenerationService.ChangeDelayAsync(message.DelayChangeRequest.Action);
+				await webOrderGenerationService.ChangeDelayAsync(message.DelayChangeRequest.OperationMode);
 			}
 		}
 	}

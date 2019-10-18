@@ -19,14 +19,14 @@ namespace LogisticsSuite.WebShop.Services
 
 		protected override WebOrderReleasedMessage Create(int customerNo) => new WebOrderReleasedMessage
 		{
-			WebOrder = new WebOrderDto
+			WebOrder = new OrderDto
 			{
 				CustomerNo = customerNo,
-				WebOrderItems = new List<WebOrderItemDto>(),
+				OrderItems = new List<OrderItemDto>(),
 			},
 		};
 
 		protected override void FillOrderItem(WebOrderReleasedMessage message, int articleNo, int quantity) =>
-			message.WebOrder.WebOrderItems.Add(new WebOrderItemDto { ArticleNo = articleNo, Quantity = quantity });
+			message.WebOrder.OrderItems.Add(new OrderItemDto { ArticleNo = articleNo, Quantity = quantity });
 	}
 }
