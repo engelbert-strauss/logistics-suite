@@ -33,7 +33,7 @@ namespace LogisticsSuite.Infrastructure.Services
 
 		public async Task ChangeDelayAsync(OperationMode operationMode)
 		{
-			if (operationMode == OperationMode.Increase)
+			if (operationMode == OperationMode.Decrease)
 			{
 				if (min > 10 && max > 10)
 				{
@@ -41,7 +41,7 @@ namespace LogisticsSuite.Infrastructure.Services
 					max -= 10;
 				}
 			}
-			else if (operationMode == OperationMode.Decrease)
+			else if (operationMode == OperationMode.Increase)
 			{
 				min += 10;
 				max += 10;

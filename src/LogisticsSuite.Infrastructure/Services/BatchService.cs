@@ -26,11 +26,11 @@ namespace LogisticsSuite.Infrastructure.Services
 		{
 			if (delay.HasValue)
 			{
-				if (operationMode == OperationMode.Increase)
+				if (operationMode == OperationMode.Decrease)
 				{
 					delay = Math.Max(0, delay.Value - 10);
 				}
-				else if (operationMode == OperationMode.Decrease)
+				else if (operationMode == OperationMode.Increase)
 				{
 					delay += 10;
 				}
