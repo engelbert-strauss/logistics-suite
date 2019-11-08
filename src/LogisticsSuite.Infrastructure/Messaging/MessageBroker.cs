@@ -30,16 +30,24 @@ namespace LogisticsSuite.Infrastructure.Messaging
 		{
 			try
 			{
-				channel.Value.ExchangeDeclare(typeof(T).FullName, "fanout");
+				Type type = typeof(T);
+
+				channel.Value.ExchangeDeclare(type.FullName, "fanout");
 
 				byte[] body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
-				logger.LogDebug("Sending message of type {Type}", typeof(T).FullName);
+				logger.LogDebug("Sending message of type {Type}", type.FullName);
+
+				IBasicProperties properties = channel.Value.CreateBasicProperties();
+
+				properties.ContentType = "application/json";
+				properties.DeliveryMode = 2;
+				properties.Type = type.AssemblyQualifiedName;
 
 				channel.Value.BasicPublish(
-					typeof(T).FullName,
+					type.FullName,
 					string.Empty,
-					null,
+					properties,
 					body);
 			}
 			catch (Exception e)
