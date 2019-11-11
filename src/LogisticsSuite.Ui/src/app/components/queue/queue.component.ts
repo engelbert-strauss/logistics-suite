@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+
 import {SignalRService} from '../../services/signalr.service';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-queue',

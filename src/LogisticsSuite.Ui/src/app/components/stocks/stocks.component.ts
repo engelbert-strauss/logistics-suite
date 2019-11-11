@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+
 import {SignalRService} from '../../services/signalr.service';
 import {StocksDto} from '../../data/stocks-dto';
 

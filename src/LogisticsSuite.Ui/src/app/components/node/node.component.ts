@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+
 import {SignalRService} from '../../services/signalr.service';
 import {DelayChangedEvent} from '../../data/delay-changed-event';
 import {ServiceName} from '../../data/service-name';

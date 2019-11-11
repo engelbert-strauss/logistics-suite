@@ -113,6 +113,7 @@ $message-factor: 2.0;
     &:focus {
       outline: 0;
     }
+
     &:hover {
       background: #D20A0F;
       color: white;
@@ -179,13 +180,21 @@ $message-factor: 2.0;
       animation: keyframe-ltr 1s linear infinite;
 
       @keyframes keyframe-ltr {
-        from { left: $start; }
-        to { left: $end; }
+        from {
+          left: $start;
+        }
+        to {
+          left: $end;
+        }
       }
 
       @keyframes keyframe-ltr-big {
-        from { left: calc(#{$start} * #{$factor}); }
-        to { left: calc(#{$end} * #{$factor}); }
+        from {
+          left: calc(#{$start} * #{$factor});
+        }
+        to {
+          left: calc(#{$end} * #{$factor});
+        }
       }
 
       @media screen and (min-width: 2560px) {
@@ -213,13 +222,21 @@ $message-factor: 2.0;
       animation: keyframe-rtl 1s linear infinite;
 
       @keyframes keyframe-rtl {
-        from { left: $start; }
-        to { left: $end; }
+        from {
+          left: $start;
+        }
+        to {
+          left: $end;
+        }
       }
 
       @keyframes keyframe-rtl-big {
-        from { left: calc(#{$start} * #{$factor}); }
-        to { left: calc(#{$end} * #{$factor}); }
+        from {
+          left: calc(#{$start} * #{$factor});
+        }
+        to {
+          left: calc(#{$end} * #{$factor});
+        }
       }
 
       @media screen and (min-width: 2560px) {
@@ -247,13 +264,21 @@ $message-factor: 2.0;
       animation: keyframe-ttb 1s linear infinite;
 
       @keyframes keyframe-ttb {
-        from { top: $start; }
-        to { top: $end; }
+        from {
+          top: $start;
+        }
+        to {
+          top: $end;
+        }
       }
 
       @keyframes keyframe-ttb-big {
-        from { top: calc(#{$start} * #{$factor}); }
-        to { top: calc(#{$end} * #{$factor}); }
+        from {
+          top: calc(#{$start} * #{$factor});
+        }
+        to {
+          top: calc(#{$end} * #{$factor});
+        }
       }
 
       @media screen and (min-width: 2560px) {

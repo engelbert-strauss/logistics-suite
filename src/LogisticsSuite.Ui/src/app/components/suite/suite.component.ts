@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+
 import {BackendService} from '../../services/backend.service';
 import {DelayChangedEvent} from '../../data/delay-changed-event';
-import {ActivatedRoute} from '@angular/router';
 import {ServiceName} from '../../data/service-name';
 
 @Component({

@@ -1,11 +1,11 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SignalRService} from './services/signalr.service';
 import {BackendService} from './services/backend.service';
-import {HttpClientModule} from '@angular/common/http';
 import {NodeComponent} from './components/node/node.component';
 import {StocksComponent} from './components/stocks/stocks.component';
 import {QueueComponent} from './components/queue/queue.component';
@@ -17,17 +17,18 @@ import {SuiteComponent} from './components/suite/suite.component';
     NodeComponent,
     StocksComponent,
     QueueComponent,
-    SuiteComponent
+    SuiteComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     SignalRService,
-    BackendService
+    BackendService,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

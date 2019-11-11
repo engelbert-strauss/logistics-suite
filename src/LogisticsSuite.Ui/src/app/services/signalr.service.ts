@@ -1,6 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {HubConnection, HubConnectionBuilder, LogLevel} from '@aspnet/signalr';
 import {BehaviorSubject, Subject} from 'rxjs';
+
 import {ParcelDispatchedMessage} from '../data/parcel-dispatched-message';
 import {OrderReleasedMessage} from '../data/order-released-message';
 import {ReplenishedMessage} from '../data/replenished-message';
