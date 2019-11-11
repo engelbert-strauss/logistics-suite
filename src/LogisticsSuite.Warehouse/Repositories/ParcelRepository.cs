@@ -1,31 +1,24 @@
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
+using LogisticsSuite.Infrastructure.Persistence;
+using MongoDB.Driver;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public class ParcelRepository : IParcelRepository
 	{
-		private readonly IDistributedCache distributedCache;
-		private readonly ConcurrentQueue<ParcelDto> parcels = new ConcurrentQueue<ParcelDto>();
+		private readonly IMongoCollection<ParcelDocument> parcelCollection;
 		private int parcelNo;
 
-		public ParcelRepository(IDistributedCache distributedCache) => this.distributedCache = distributedCache;
+		public ParcelRepository(IMongoCollection<ParcelDocument> parcelCollection) => this.parcelCollection = parcelCollection;
 
-		public async Task<ParcelDto> DequeueAsync()
+		public async Task<ParcelDto> DeleteAsync()
 		{
-			parcels.TryDequeue(out ParcelDto parcel);
-			await distributedCache.SetValueAsync("Warehouse.ParcelQueue", parcels.Count).ConfigureAwait(false);
+			var options = new FindOneAndDeleteOptions<ParcelDocument> { Sort = Builders<ParcelDocument>.Sort.Ascending(x => x.Id) };
+			ParcelDocument document = await parcelCollection.FindOneAndDeleteAsync(FilterDefinition<ParcelDocument>.Empty, options).ConfigureAwait(false);
 
-			return parcel;
-		}
-
-		public async Task EnqueueAsync(ParcelDto parcel)
-		{
-			parcels.Enqueue(parcel);
-			await distributedCache.SetValueAsync("Warehouse.ParcelQueue", parcels.Count).ConfigureAwait(false);
+			return document?.Parcel;
 		}
 
 		public int GetNextParcelNo()
@@ -34,5 +27,7 @@ namespace LogisticsSuite.Warehouse.Repositories
 
 			return parcelNo;
 		}
+
+		public Task InsertAsync(ParcelDto parcel) => parcelCollection.InsertOneAsync(new ParcelDocument { Parcel = parcel });
 	}
 }

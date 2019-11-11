@@ -3,6 +3,7 @@ using LogisticsSuite.Backend.Handlers;
 using LogisticsSuite.Backend.Hubs;
 using LogisticsSuite.Backend.Services;
 using LogisticsSuite.Infrastructure.Messages;
+using LogisticsSuite.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,10 @@ namespace LogisticsSuite.Backend
 				.AddTransient<ReplenishmentRequestedMessageHandler>()
 				.AddTransient<WebOrderReleasedMessageHandler>()
 				.AddTransient<CallOrderReleasedMessageHandler>()
-				.AddBatchService<IMonitoringService, MonitoringService>();
+				.AddBatchService<IMonitoringService, MonitoringService>()
+				.AddSingleton(MongoHelper.AddClient)
+				.AddTransient(MongoHelper.AddOrderCollection)
+				.AddTransient(MongoHelper.AddParcelCollection);
 			services.AddControllers()
 				.AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

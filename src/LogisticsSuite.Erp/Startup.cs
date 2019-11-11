@@ -1,7 +1,8 @@
 using LogisticsSuite.Erp.Handlers;
-using LogisticsSuite.Erp.Repositories;
+using LogisticsSuite.Erp.Persistence;
 using LogisticsSuite.Erp.Services;
 using LogisticsSuite.Infrastructure.Messages;
+using LogisticsSuite.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,10 +23,12 @@ namespace LogisticsSuite.Erp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) => services
 			.AddInfrastructure()
-			.AddSingleton<IOrderRepository, OrderRepository>()
+			.AddTransient<IBacklogRepository, BacklogRepository>()
 			.AddBatchService<IReleaseOrderService, ReleaseOrderService>()
 			.AddTransient<WebOrderReleasedMessageHandler>()
 			.AddTransient<CallOrderReleasedMessageHandler>()
-			.AddTransient<DelayChangeRequestedMessageHandler>();
+			.AddTransient<DelayChangeRequestedMessageHandler>()
+			.AddSingleton(MongoHelper.AddClient)
+			.AddTransient(MongoHelper.AddBacklogCollection);
 	}
 }

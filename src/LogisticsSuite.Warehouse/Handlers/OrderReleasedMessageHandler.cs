@@ -11,11 +11,6 @@ namespace LogisticsSuite.Warehouse.Handlers
 
 		public OrderReleasedMessageHandler(IOrderRepository orderRepository) => this.orderRepository = orderRepository;
 
-		public Task HandleAsync(OrderReleasedMessage message)
-		{
-			orderRepository.Enqueue(message.Order);
-
-			return Task.CompletedTask;
-		}
+		public Task HandleAsync(OrderReleasedMessage message) => orderRepository.InsertAsync(message.Order);
 	}
 }

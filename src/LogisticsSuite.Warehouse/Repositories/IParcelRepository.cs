@@ -5,10 +5,10 @@ namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IParcelRepository
 	{
-		Task<ParcelDto> DequeueAsync();
-
-		Task EnqueueAsync(ParcelDto parcel);
+		Task<ParcelDto> DeleteAsync();
 
 		int GetNextParcelNo();
+
+		Task InsertAsync(ParcelDto parcel);
 	}
 }

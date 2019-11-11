@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LogisticsSuite.Erp.Repositories;
+using LogisticsSuite.Erp.Persistence;
 using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
@@ -10,9 +10,9 @@ namespace LogisticsSuite.Erp.Handlers
 {
 	public class WebOrderReleasedMessageHandler : IMessageHandler<WebOrderReleasedMessage>
 	{
-		private readonly IOrderRepository orderRepository;
+		private readonly IBacklogRepository backlogRepository;
 
-		public WebOrderReleasedMessageHandler(IOrderRepository orderRepository) => this.orderRepository = orderRepository;
+		public WebOrderReleasedMessageHandler(IBacklogRepository backlogRepository) => this.backlogRepository = backlogRepository;
 
 		public async Task HandleAsync(WebOrderReleasedMessage message)
 		{
@@ -20,7 +20,7 @@ namespace LogisticsSuite.Erp.Handlers
 			{
 				OrderItems = new List<OrderItemDto>(),
 				CustomerNo = message.WebOrder.CustomerNo,
-				OrderNo = orderRepository.GetNextOrderNo(),
+				OrderNo = backlogRepository.GetNextOrderNo(),
 			};
 
 			order.OrderItems.AddRange(
@@ -31,7 +31,7 @@ namespace LogisticsSuite.Erp.Handlers
 						Quantity = x.Quantity,
 					}));
 
-			await orderRepository.EnqueueAsync(order).ConfigureAwait(false);
+			await backlogRepository.InsertAsync(order).ConfigureAwait(false);
 		}
 	}
 }

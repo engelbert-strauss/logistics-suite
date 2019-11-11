@@ -10,13 +10,13 @@ namespace LogisticsSuite.Backend.Hubs
 
 		Task OnDelayChangedAsync(DelayDto delay);
 
-		Task OnOrderQueueChangedAsync(int count);
+		Task OnOrderQueueChangedAsync(long count);
 
 		Task OnOrderReleasedMessageReceivedAsync(OrderReleasedMessage message);
 
 		Task OnParcelDispatchedMessageReceivedAsync(ParcelDispatchedMessage message);
 
-		Task OnParcelQueueChangedAsync(int count);
+		Task OnParcelQueueChangedAsync(long count);
 
 		Task OnReplenishedMessageReceivedAsync(ReplenishedMessage message);
 

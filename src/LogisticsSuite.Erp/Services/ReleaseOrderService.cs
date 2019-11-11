@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using LogisticsSuite.Erp.Repositories;
+using LogisticsSuite.Erp.Persistence;
 using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
@@ -13,22 +13,22 @@ namespace LogisticsSuite.Erp.Services
 	public class ReleaseOrderService : BatchService, IReleaseOrderService
 	{
 		private readonly IMessageBroker messageBroker;
-		private readonly IOrderRepository orderRepository;
+		private readonly IBacklogRepository backlogRepository;
 
 		public ReleaseOrderService(
 			IConfiguration configuration,
 			IDistributedCache distributedCache,
-			IOrderRepository orderRepository,
+			IBacklogRepository backlogRepository,
 			IMessageBroker messageBroker)
 			: base(configuration, distributedCache)
 		{
-			this.orderRepository = orderRepository;
+			this.backlogRepository = backlogRepository;
 			this.messageBroker = messageBroker;
 		}
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
-			OrderDto order = await orderRepository.DequeueAsync().ConfigureAwait(false);
+			OrderDto order = await backlogRepository.DeleteAsync().ConfigureAwait(false);
 
 			if (order != null)
 			{

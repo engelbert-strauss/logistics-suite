@@ -1,14 +1,16 @@
 using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Dtos;
+using LogisticsSuite.Infrastructure.Persistence;
+using MongoDB.Bson;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IOrderRepository
 	{
-		Task DequeueAsync();
+		Task Delete(ObjectId id);
 
-		Task Enqueue(OrderDto order);
+		Task InsertAsync(OrderDto order);
 
-		OrderDto Peek();
+		Task<OrderDocument> PeekAsync();
 	}
 }

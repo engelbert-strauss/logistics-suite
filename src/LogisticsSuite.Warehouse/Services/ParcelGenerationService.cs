@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
+using LogisticsSuite.Infrastructure.Persistence;
 using LogisticsSuite.Infrastructure.Services;
 using LogisticsSuite.Warehouse.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -33,11 +34,11 @@ namespace LogisticsSuite.Warehouse.Services
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
-			OrderDto order = orderRepository.Peek();
+			OrderDocument document = await orderRepository.PeekAsync().ConfigureAwait(false);
 
-			if (order != null && await GenerateParcelsAsync(order).ConfigureAwait(false))
+			if (document != null && await GenerateParcelsAsync(document.Order).ConfigureAwait(false))
 			{
-				await orderRepository.DequeueAsync().ConfigureAwait(false);
+				await orderRepository.Delete(document.Id).ConfigureAwait(false);
 			}
 		}
 
@@ -84,7 +85,7 @@ namespace LogisticsSuite.Warehouse.Services
 
 			foreach (ParcelDto parcel in parcels)
 			{
-				await parcelRepository.EnqueueAsync(parcel).ConfigureAwait(false);
+				await parcelRepository.InsertAsync(parcel).ConfigureAwait(false);
 			}
 
 			return true;

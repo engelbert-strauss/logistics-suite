@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using LogisticsSuite.Backend.Hubs;
 using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
+using LogisticsSuite.Infrastructure.Persistence;
 using LogisticsSuite.Infrastructure.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 
 namespace LogisticsSuite.Backend.Services
 {
@@ -15,16 +17,22 @@ namespace LogisticsSuite.Backend.Services
 		private readonly IConfiguration configuration;
 		private readonly IDistributedCache distributedCache;
 		private readonly IHubContext<MonitorHub, IMonitorHub> hubContext;
+		private readonly IMongoCollection<OrderDocument> orderCollection;
+		private readonly IMongoCollection<ParcelDocument> parcelCollection;
 
 		public MonitoringService(
 			IConfiguration configuration,
 			IDistributedCache distributedCache,
-			IHubContext<MonitorHub, IMonitorHub> hubContext)
+			IHubContext<MonitorHub, IMonitorHub> hubContext,
+			IMongoCollection<OrderDocument> orderCollection,
+			IMongoCollection<ParcelDocument> parcelCollection)
 			: base(configuration, distributedCache)
 		{
 			this.configuration = configuration;
 			this.hubContext = hubContext;
 			this.distributedCache = distributedCache;
+			this.orderCollection = orderCollection;
+			this.parcelCollection = parcelCollection;
 		}
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
@@ -33,13 +41,17 @@ namespace LogisticsSuite.Backend.Services
 
 			await hubContext.Clients.All.OnDelayChangedAsync(delay).ConfigureAwait(false);
 
-			int warehouseOrderQueueCount = await distributedCache.GetValueAsync("Warehouse.OrderQueue").ConfigureAwait(false) ?? default;
+			long orderCount = await orderCollection.CountDocumentsAsync(
+				FilterDefinition<OrderDocument>.Empty,
+				cancellationToken: stoppingToken).ConfigureAwait(false);
 
-			await hubContext.Clients.All.OnOrderQueueChangedAsync(warehouseOrderQueueCount).ConfigureAwait(false);
+			await hubContext.Clients.All.OnOrderQueueChangedAsync(orderCount).ConfigureAwait(false);
 
-			int warehouseParcelQueueCount = await distributedCache.GetValueAsync("Warehouse.ParcelQueue").ConfigureAwait(false) ?? default;
+			long parcelCount = await parcelCollection.CountDocumentsAsync(
+				FilterDefinition<ParcelDocument>.Empty,
+				cancellationToken: stoppingToken).ConfigureAwait(false);
 
-			await hubContext.Clients.All.OnParcelQueueChangedAsync(warehouseParcelQueueCount).ConfigureAwait(false);
+			await hubContext.Clients.All.OnParcelQueueChangedAsync(parcelCount).ConfigureAwait(false);
 
 			var articles = configuration.GetSection("Articles").Get<int[]>();
 			var stocks = new List<StocksDto>();

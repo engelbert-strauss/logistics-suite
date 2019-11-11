@@ -14,8 +14,10 @@ services:
       - red01
       - red02
       - rmq
+      - mdb
     environment:
       - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - MongoConnection__ConnectionString=mongodb://mdb
       - RabbitMq__Hostname=rmq
     deploy:
       replicas: 1
@@ -32,8 +34,10 @@ services:
       - logisticssuite-backend
       - logisticssuite-webshop
       - logisticssuite-callcenter
+      - mdb
     environment:
       - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - MongoConnection__ConnectionString=mongodb://mdb
       - RabbitMq__Hostname=rmq
     deploy:
       replicas: 1
@@ -66,8 +70,10 @@ services:
     depends_on:
       - logisticssuite-backend
       - logisticssuite-erp
+      - mdb
     environment:
       - RedisConnection__ConnectionString=red01,red02,abortConnect=false,keepAlive=60
+      - MongoConnection__ConnectionString=mongodb://mdb
       - RabbitMq__Hostname=rmq
     deploy:
       replicas: 1
@@ -135,6 +141,10 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+
+  mdb:
+    image: mongo:4
+    hostname: mdb
 
 volumes:
   rmqdata:

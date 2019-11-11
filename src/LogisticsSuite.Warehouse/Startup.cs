@@ -1,4 +1,5 @@
 using LogisticsSuite.Infrastructure.Messages;
+using LogisticsSuite.Infrastructure.Persistence;
 using LogisticsSuite.Warehouse.Handlers;
 using LogisticsSuite.Warehouse.Repositories;
 using LogisticsSuite.Warehouse.Services;
@@ -25,9 +26,12 @@ namespace LogisticsSuite.Warehouse
 			.AddTransient<OrderReleasedMessageHandler>()
 			.AddTransient<ReplenishedMessageHandler>()
 			.AddTransient<DelayChangeRequestedMessageHandler>()
+			.AddTransient(MongoHelper.AddOrderCollection)
+			.AddTransient(MongoHelper.AddParcelCollection)
 			.AddSingleton<IStocksRepository, StocksRepository>()
 			.AddSingleton<IParcelRepository, ParcelRepository>()
 			.AddSingleton<IOrderRepository, OrderRepository>()
+			.AddSingleton(MongoHelper.AddClient)
 			.AddSingleton<IReplenishmentRepository, ReplenishmentRepository>()
 			.AddBatchService<IParcelDispatchService, ParcelDispatchService>()
 			.AddBatchService<IParcelGenerationService, ParcelGenerationService>()

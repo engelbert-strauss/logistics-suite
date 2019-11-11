@@ -1,29 +1,28 @@
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using LogisticsSuite.Infrastructure.Caching;
 using LogisticsSuite.Infrastructure.Dtos;
+using LogisticsSuite.Infrastructure.Persistence;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace LogisticsSuite.Warehouse.Repositories
 {
 	public class OrderRepository : IOrderRepository
 	{
-		private readonly IDistributedCache distributedCache;
-		private readonly ConcurrentQueue<OrderDto> orders = new ConcurrentQueue<OrderDto>();
+		private readonly IMongoCollection<OrderDocument> orderCollection;
 
-		public OrderRepository(IDistributedCache distributedCache) => this.distributedCache = distributedCache;
+		public OrderRepository(IMongoCollection<OrderDocument> orderCollection) => this.orderCollection = orderCollection;
 
-		public async Task DequeueAsync()
+		public Task Delete(ObjectId id) => orderCollection.DeleteOneAsync(Builders<OrderDocument>.Filter.Eq(x => x.Id, id));
+
+		public Task InsertAsync(OrderDto order) => orderCollection.InsertOneAsync(new OrderDocument { Order = order });
+
+		public async Task<OrderDocument> PeekAsync()
 		{
-			orders.TryDequeue(out OrderDto _);
-			await distributedCache.SetValueAsync("Warehouse.OrderQueue", orders.Count).ConfigureAwait(false);
-		}
+			var options = new FindOptions<OrderDocument> { Sort = Builders<OrderDocument>.Sort.Ascending(x => x.Id) };
+			IAsyncCursor<OrderDocument> cursor = await orderCollection.FindAsync(FilterDefinition<OrderDocument>.Empty, options).ConfigureAwait(false);
+			OrderDocument document = await cursor.FirstOrDefaultAsync().ConfigureAwait(false);
 
-		public async Task Enqueue(OrderDto order)
-		{
-			orders.Enqueue(order);
-			await distributedCache.SetValueAsync("Warehouse.OrderQueue", orders.Count).ConfigureAwait(false);
+			return document;
 		}
-
-		public OrderDto Peek() => orders.TryPeek(out OrderDto order) ? order : null;
 	}
 }
