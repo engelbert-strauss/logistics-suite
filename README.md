@@ -48,3 +48,7 @@ Now you can open the simple web ui of the _Logistics Suite_ on http://localhost:
 
 Just issue the following statement in a _PowerShell_ to remove the deployed stack from the local _Kubernetes_ cluster.
 
+~~~powershell
+./build --target=stop
+~~~
+
