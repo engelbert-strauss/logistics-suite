@@ -13,6 +13,7 @@ Features
 - communication via different technologies
   - distributed caching (_Redis_)
   - message bus (_RabbitMq_)
+  - persistence layer (_MongoDB_)
 - containerized build (_Docker_)
 - `docker stack` based _Kubernetes_ deployment
 
