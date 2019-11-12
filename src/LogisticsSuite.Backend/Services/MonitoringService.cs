@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LogisticsSuite.Backend.Hubs;
@@ -14,25 +15,26 @@ namespace LogisticsSuite.Backend.Services
 {
 	public class MonitoringService : BatchService, IMonitoringService
 	{
-		private readonly IConfiguration configuration;
 		private readonly IDistributedCache distributedCache;
 		private readonly IHubContext<MonitorHub, IMonitorHub> hubContext;
 		private readonly IMongoCollection<OrderDocument> orderCollection;
 		private readonly IMongoCollection<ParcelDocument> parcelCollection;
+		private readonly IMongoCollection<StocksDocument> stocksCollection;
 
 		public MonitoringService(
 			IConfiguration configuration,
 			IDistributedCache distributedCache,
 			IHubContext<MonitorHub, IMonitorHub> hubContext,
 			IMongoCollection<OrderDocument> orderCollection,
-			IMongoCollection<ParcelDocument> parcelCollection)
+			IMongoCollection<ParcelDocument> parcelCollection,
+			IMongoCollection<StocksDocument> stocksCollection)
 			: base(configuration, distributedCache)
 		{
-			this.configuration = configuration;
 			this.hubContext = hubContext;
 			this.distributedCache = distributedCache;
 			this.orderCollection = orderCollection;
 			this.parcelCollection = parcelCollection;
+			this.stocksCollection = stocksCollection;
 		}
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
@@ -53,17 +55,13 @@ namespace LogisticsSuite.Backend.Services
 
 			await hubContext.Clients.All.OnParcelQueueChangedAsync(parcelCount).ConfigureAwait(false);
 
-			var articles = configuration.GetSection("Articles").Get<int[]>();
+			IAsyncCursor<StocksDocument> cursor = await stocksCollection.FindAsync(FilterDefinition<StocksDocument>.Empty, cancellationToken: stoppingToken)
+				.ConfigureAwait(false);
 			var stocks = new List<StocksDto>();
 
-			foreach (int articleNo in articles)
+			while (await cursor.MoveNextAsync(stoppingToken).ConfigureAwait(false))
 			{
-				stocks.Add(
-					new StocksDto
-					{
-						ArticleNo = articleNo,
-						Quantity = await distributedCache.GetValueAsync($"Warehouse.Stocks.${articleNo}").ConfigureAwait(false) ?? default,
-					});
+				stocks.AddRange(cursor.Current.Select(document => new StocksDto { ArticleNo = document.ArticleNo, Quantity = document.Quantity, }));
 			}
 
 			await hubContext.Clients.All.OnStocksChangedAsync(stocks.ToArray());

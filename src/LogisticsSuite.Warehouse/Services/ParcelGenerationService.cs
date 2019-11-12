@@ -46,7 +46,7 @@ namespace LogisticsSuite.Warehouse.Services
 		{
 			foreach (ParcelItemDto parcelItem in parcels.SelectMany(x => x.ParcelItems))
 			{
-				await stocksRepository.PutInAsync(parcelItem.ArticleNo, parcelItem.Quantity).ConfigureAwait(false);
+				await stocksRepository.ClearReservation(parcelItem.ArticleNo, parcelItem.Quantity).ConfigureAwait(false);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace LogisticsSuite.Warehouse.Services
 				{
 					OrderItemDto orderItem = orderItems.Dequeue();
 
-					if (await stocksRepository.TakeOutAsync(orderItem.ArticleNo, orderItem.Quantity).ConfigureAwait(false))
+					if (await stocksRepository.ReserveAsync(orderItem.ArticleNo, orderItem.Quantity).ConfigureAwait(false))
 					{
 						parcel.ParcelItems.Add(new ParcelItemDto { ArticleNo = orderItem.ArticleNo, Quantity = orderItem.Quantity });
 					}
@@ -86,6 +86,10 @@ namespace LogisticsSuite.Warehouse.Services
 			foreach (ParcelDto parcel in parcels)
 			{
 				await parcelRepository.InsertAsync(parcel).ConfigureAwait(false);
+				foreach (ParcelItemDto parcelItem in parcel.ParcelItems)
+				{
+					await stocksRepository.ConfirmReservation(parcelItem.ArticleNo, parcelItem.Quantity).ConfigureAwait(false);
+				}
 			}
 
 			return true;

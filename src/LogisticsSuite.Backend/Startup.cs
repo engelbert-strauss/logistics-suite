@@ -55,7 +55,8 @@ namespace LogisticsSuite.Backend
 				.AddBatchService<IMonitoringService, MonitoringService>()
 				.AddSingleton(MongoHelper.AddClient)
 				.AddTransient(MongoHelper.AddOrderCollection)
-				.AddTransient(MongoHelper.AddParcelCollection);
+				.AddTransient(MongoHelper.AddParcelCollection)
+				.AddTransient(MongoHelper.AddStocksCollection);
 			services.AddControllers()
 				.AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

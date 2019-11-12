@@ -18,5 +18,8 @@ namespace LogisticsSuite.Infrastructure.Persistence
 
 		public static IMongoCollection<ParcelDocument> AddParcelCollection(IServiceProvider serviceProvider) =>
 			serviceProvider.GetService<IMongoClient>().GetDatabase("warehouse").GetCollection<ParcelDocument>("parcels");
+
+		public static IMongoCollection<StocksDocument> AddStocksCollection(IServiceProvider serviceProvider) =>
+			serviceProvider.GetService<IMongoClient>().GetDatabase("warehouse").GetCollection<StocksDocument>("stocks");
 	}
 }

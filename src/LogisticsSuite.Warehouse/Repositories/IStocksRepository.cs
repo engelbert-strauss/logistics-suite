@@ -4,10 +4,12 @@ namespace LogisticsSuite.Warehouse.Repositories
 {
 	public interface IStocksRepository
 	{
-		Task PutInAsync(int articleNo, int quantity);
+		Task ClearReservation(int articleNo, int quantity);
 
-		Task ReplenishAsync(int articleNo, int quantity);
+		Task ConfirmReservation(int articleNo, int quantity);
 
-		Task<bool> TakeOutAsync(int articleNo, int quantity);
+		Task InsertAsync(int articleNo, int quantity);
+
+		Task<bool> ReserveAsync(int articleNo, int quantity);
 	}
 }

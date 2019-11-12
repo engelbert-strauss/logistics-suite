@@ -18,6 +18,8 @@ namespace LogisticsSuite.Warehouse
 				.Register<ReplenishedMessage, ReplenishedMessageHandler>()
 				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
 			app.UseBatchServices();
+			app.CreateIndices();
+			app.InitializeStocks();
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -28,11 +30,11 @@ namespace LogisticsSuite.Warehouse
 			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddTransient(MongoHelper.AddOrderCollection)
 			.AddTransient(MongoHelper.AddParcelCollection)
+			.AddTransient(MongoHelper.AddStocksCollection)
 			.AddSingleton<IStocksRepository, StocksRepository>()
 			.AddSingleton<IParcelRepository, ParcelRepository>()
 			.AddSingleton<IOrderRepository, OrderRepository>()
 			.AddSingleton(MongoHelper.AddClient)
-			.AddSingleton<IReplenishmentRepository, ReplenishmentRepository>()
 			.AddBatchService<IParcelDispatchService, ParcelDispatchService>()
 			.AddBatchService<IParcelGenerationService, ParcelGenerationService>()
 			.AddBatchService<IRequestReplenishmentService, RequestReplenishmentService>();
