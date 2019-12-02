@@ -15,8 +15,7 @@ namespace LogisticsSuite.Warehouse
 		{
 			app.UseMessaging()
 				.Register<OrderReleasedMessage, OrderReleasedMessageHandler>()
-				.Register<ReplenishedMessage, ReplenishedMessageHandler>()
-				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+				.Register<ReplenishedMessage, ReplenishedMessageHandler>();
 			app.UseBatchServices();
 			app.CreateIndices();
 			app.InitializeStocks();
@@ -27,7 +26,6 @@ namespace LogisticsSuite.Warehouse
 			.AddInfrastructure()
 			.AddTransient<OrderReleasedMessageHandler>()
 			.AddTransient<ReplenishedMessageHandler>()
-			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddTransient(MongoHelper.AddOrderCollection)
 			.AddTransient(MongoHelper.AddParcelCollection)
 			.AddTransient(MongoHelper.AddStocksCollection)

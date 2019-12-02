@@ -16,10 +16,6 @@ namespace LogisticsSuite.Infrastructure.Services
 		private readonly IDistributedCache distributedCache;
 		private readonly IMessageBroker messageBroker;
 		private readonly Random random = new Random();
-		private string cacheKeyMax;
-		private string cacheKeyMin;
-		private int max;
-		private int min;
 
 		protected OrderGenerationService(IMessageBroker messageBroker, IConfiguration configuration, IDistributedCache distributedCache)
 		{
@@ -29,36 +25,12 @@ namespace LogisticsSuite.Infrastructure.Services
 			articles = configuration.GetSection("Random:Articles").Get<int[]>();
 		}
 
-		protected abstract string Name { get; }
-
-		public async Task ChangeDelayAsync(OperationMode operationMode)
-		{
-			if (operationMode == OperationMode.Decrease)
-			{
-				if (min > 10 && max > 10)
-				{
-					min -= 10;
-					max -= 10;
-				}
-			}
-			else if (operationMode == OperationMode.Increase)
-			{
-				min += 10;
-				max += 10;
-			}
-
-			await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
-			await distributedCache.SetValueAsync(cacheKeyMax, max).ConfigureAwait(false);
-		}
+		protected abstract ServiceName ServiceName { get; }
 
 		public async Task InitializeAsync()
 		{
-			cacheKeyMin = $"Delay:{Name}:Min";
-			cacheKeyMax = $"Delay:{Name}:Max";
-			min = configuration.GetValue<int>(cacheKeyMin);
-			await distributedCache.SetValueAsync(cacheKeyMin, min).ConfigureAwait(false);
-			max = configuration.GetValue<int>(cacheKeyMax);
-			await distributedCache.SetValueAsync(cacheKeyMax, max).ConfigureAwait(false);
+			await distributedCache.SetValueAsync($"Delay:{ServiceName}:Min", configuration.GetValue<int>($"Delay:{ServiceName}:Min")).ConfigureAwait(false);
+			await distributedCache.SetValueAsync($"Delay:{ServiceName}:Max", configuration.GetValue<int>($"Delay:{ServiceName}:Max")).ConfigureAwait(false);
 		}
 
 		protected abstract T Create(int customerNo);
@@ -76,11 +48,19 @@ namespace LogisticsSuite.Infrastructure.Services
 					// Retry forever
 				}
 
-				await Task.Delay(TimeSpan.FromMilliseconds(random.Next(min, max)), stoppingToken).ConfigureAwait(false);
+				await Task.Delay(await GetDelayAsync().ConfigureAwait(false), stoppingToken).ConfigureAwait(false);
 			}
 		}
 
 		protected abstract void FillOrderItem(T message, int articleNo, int quantity);
+
+		private async Task<TimeSpan> GetDelayAsync()
+		{
+			int min = await distributedCache.GetValueAsync($"Delay:{ServiceName}:Min").ConfigureAwait(false) ?? configuration.GetValue<int>($"Delay:{ServiceName}:Min");
+			int max = await distributedCache.GetValueAsync($"Delay:{ServiceName}:Max").ConfigureAwait(false) ?? configuration.GetValue<int>($"Delay:{ServiceName}:Max");
+
+			return TimeSpan.FromMilliseconds(random.Next(min, max));
+		}
 
 		private Task ReleaseCallOrder()
 		{

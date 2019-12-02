@@ -6,6 +6,6 @@ namespace LogisticsSuite.Infrastructure.Dtos
 
 		public int MinValue { get; set; }
 
-		public string Service { get; set; }
+		public ServiceName ServiceName { get; set; }
 	}
 }

@@ -15,7 +15,7 @@ namespace LogisticsSuite.CallCenter.Services
 		{
 		}
 
-		protected override string Name { get; } = nameof(CallOrderGenerationService).Replace("Service", string.Empty);
+		protected override ServiceName ServiceName { get; } = ServiceName.CallOrderGeneration;
 
 		protected override CallOrderReleasedMessage Create(int customerNo) => new CallOrderReleasedMessage
 		{

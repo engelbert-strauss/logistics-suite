@@ -15,8 +15,7 @@ namespace LogisticsSuite.Erp
 		{
 			app.UseMessaging()
 				.Register<WebOrderReleasedMessage, WebOrderReleasedMessageHandler>()
-				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>()
-				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+				.Register<CallOrderReleasedMessage, CallOrderReleasedMessageHandler>();
 			app.UseBatchServices();
 		}
 
@@ -27,7 +26,6 @@ namespace LogisticsSuite.Erp
 			.AddBatchService<IReleaseOrderService, ReleaseOrderService>()
 			.AddTransient<WebOrderReleasedMessageHandler>()
 			.AddTransient<CallOrderReleasedMessageHandler>()
-			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddSingleton(MongoHelper.AddClient)
 			.AddTransient(MongoHelper.AddBacklogCollection);
 	}

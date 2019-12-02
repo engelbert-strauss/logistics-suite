@@ -60,7 +60,7 @@ namespace LogisticsSuite.Backend
 			services.AddControllers()
 				.AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-			services.AddSignalR().AddJsonProtocol();
+			services.AddSignalR().AddJsonProtocol(x => x.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 		}
 	}
 }

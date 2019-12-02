@@ -1,8 +1,11 @@
 export enum ServiceName {
-  CallCenter,
-  Erp,
+  CallOrderGeneration,
+  ReleaseOrder,
   Replenishment,
-  Warehouse,
-  WebShop,
+  ParcelDispatch,
+  WebOrderGeneration,
   Dispatch,
+  Monitoring = 6,
+  ParcelGeneration = 7,
+  RequestReplenishment = 8,
 }

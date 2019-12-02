@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LogisticsSuite.Infrastructure.Caching;
+using LogisticsSuite.Infrastructure.Dtos;
 using LogisticsSuite.Infrastructure.Messages;
 using LogisticsSuite.Infrastructure.Messaging;
 using LogisticsSuite.Infrastructure.Persistence;
@@ -25,6 +26,8 @@ namespace LogisticsSuite.Warehouse.Services
 			this.stocksCollection = stocksCollection;
 			this.messageBroker = messageBroker;
 		}
+
+		protected override ServiceName ServiceName { get; } = ServiceName.RequestReplenishment;
 
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{

@@ -29,15 +29,15 @@ $message-factor: 2.0;
     background-size: calc(#{$width} * #{$factor}) calc(#{$height} * #{$factor});
   }
 
-  &.WebShop {
+  &.WebOrderGeneration {
     background-image: url("../../../assets/online_shopping.svg");
   }
 
-  &.Erp {
+  &.ReleaseOrder {
     background-image: url("../../../assets/building.svg");
   }
 
-  &.CallCenter {
+  &.CallOrderGeneration {
     background-image: url("../../../assets/calling.svg");
   }
 
@@ -45,7 +45,7 @@ $message-factor: 2.0;
     background-image: url("../../../assets/container_ship.svg");
   }
 
-  &.Warehouse {
+  &.ParcelDispatch {
     background-image: url("../../../assets/logistics.svg");
   }
 

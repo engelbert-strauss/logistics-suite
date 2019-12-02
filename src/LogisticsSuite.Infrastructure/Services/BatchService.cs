@@ -10,40 +10,18 @@ namespace LogisticsSuite.Infrastructure.Services
 {
 	public abstract class BatchService : BackgroundService, IBatchService
 	{
-		private readonly string key;
 		private readonly IConfiguration configuration;
 		private readonly IDistributedCache distributedCache;
-		private int? delay;
 
 		protected BatchService(IConfiguration configuration, IDistributedCache distributedCache)
 		{
 			this.distributedCache = distributedCache;
 			this.configuration = configuration;
-			key = $"Delay:{GetType().Name.Replace("Service", string.Empty)}";
 		}
 
-		public async Task ChangeDelayAsync(OperationMode operationMode)
-		{
-			if (delay.HasValue)
-			{
-				if (operationMode == OperationMode.Decrease)
-				{
-					delay = Math.Max(0, delay.Value - 10);
-				}
-				else if (operationMode == OperationMode.Increase)
-				{
-					delay += 10;
-				}
+		protected abstract ServiceName ServiceName { get; }
 
-				await distributedCache.SetValueAsync(key, delay.Value).ConfigureAwait(false);
-			}
-		}
-
-		public async Task InitializeAsync()
-		{
-			delay = configuration.GetValue<int>(key);
-			await distributedCache.SetValueAsync(key, delay.Value).ConfigureAwait(false);
-		}
+		public Task InitializeAsync() => distributedCache.SetValueAsync($"Delay:{ServiceName}", configuration.GetValue<int>($"Delay:{ServiceName}"));
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
@@ -58,10 +36,13 @@ namespace LogisticsSuite.Infrastructure.Services
 					// Retry forever.
 				}
 
-				await Task.Delay(TimeSpan.FromMilliseconds(delay ?? 1000), stoppingToken).ConfigureAwait(false);
+				await Task.Delay(await GetDelayAsync().ConfigureAwait(false), stoppingToken).ConfigureAwait(false);
 			}
 		}
 
 		protected abstract Task ExecuteInternalAsync(CancellationToken stoppingToken);
+
+		private async Task<TimeSpan> GetDelayAsync() => TimeSpan.FromMilliseconds(
+			await distributedCache.GetValueAsync($"Delay:{ServiceName}").ConfigureAwait(false) ?? configuration.GetValue<int>($"Delay:{ServiceName}"));
 	}
 }

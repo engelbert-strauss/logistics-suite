@@ -32,6 +32,8 @@ namespace LogisticsSuite.Warehouse.Services
 			this.configuration = configuration;
 		}
 
+		protected override ServiceName ServiceName { get; } = ServiceName.ParcelGeneration;
+
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
 			OrderDocument document = await orderRepository.PeekAsync().ConfigureAwait(false);

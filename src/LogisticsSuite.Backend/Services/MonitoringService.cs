@@ -37,6 +37,8 @@ namespace LogisticsSuite.Backend.Services
 			this.stocksCollection = stocksCollection;
 		}
 
+		protected override ServiceName ServiceName { get; } = ServiceName.Monitoring;
+
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
 			DelayDto delay = await GetDelayDtoAsync().ConfigureAwait(false);
@@ -67,32 +69,32 @@ namespace LogisticsSuite.Backend.Services
 			await hubContext.Clients.All.OnStocksChangedAsync(stocks.ToArray());
 		}
 
-		private async Task AddPeriodicDelayAsync(string service, ICollection<PeriodicDelayDto> list)
+		private async Task AddPeriodicDelayAsync(ServiceName serviceName, ICollection<PeriodicDelayDto> list)
 		{
-			int? delay = await distributedCache.GetValueAsync($"Delay:{service}").ConfigureAwait(false);
+			int? delay = await distributedCache.GetValueAsync($"Delay:{serviceName}").ConfigureAwait(false);
 
 			if (delay.HasValue)
 			{
 				list.Add(
 					new PeriodicDelayDto
 					{
-						Service = service,
+						ServiceName = serviceName,
 						Value = delay.Value,
 					});
 			}
 		}
 
-		private async Task AddRandomDelayAsync(string service, ICollection<RandomDelayDto> list)
+		private async Task AddRandomDelayAsync(ServiceName serviceName, ICollection<RandomDelayDto> list)
 		{
-			int? min = await distributedCache.GetValueAsync($"Delay:{service}:Min").ConfigureAwait(false);
-			int? max = await distributedCache.GetValueAsync($"Delay:{service}:Max").ConfigureAwait(false);
+			int? min = await distributedCache.GetValueAsync($"Delay:{serviceName}:Min").ConfigureAwait(false);
+			int? max = await distributedCache.GetValueAsync($"Delay:{serviceName}:Max").ConfigureAwait(false);
 
 			if (min.HasValue && max.HasValue)
 			{
 				list.Add(
 					new RandomDelayDto
 					{
-						Service = service,
+						ServiceName = serviceName,
 						MinValue = min.Value,
 						MaxValue = max.Value,
 					});
@@ -103,11 +105,11 @@ namespace LogisticsSuite.Backend.Services
 		{
 			var dto = new DelayDto { RandomDelays = new List<RandomDelayDto>(), PeriodicDelays = new List<PeriodicDelayDto>() };
 
-			await AddRandomDelayAsync("WebOrderGeneration", dto.RandomDelays).ConfigureAwait(false);
-			await AddRandomDelayAsync("CallOrderGeneration", dto.RandomDelays).ConfigureAwait(false);
-			await AddPeriodicDelayAsync("ReleaseOrder", dto.PeriodicDelays).ConfigureAwait(false);
-			await AddPeriodicDelayAsync("Replenishment", dto.PeriodicDelays).ConfigureAwait(false);
-			await AddPeriodicDelayAsync("ParcelDispatch", dto.PeriodicDelays).ConfigureAwait(false);
+			await AddRandomDelayAsync(ServiceName.WebOrderGeneration, dto.RandomDelays).ConfigureAwait(false);
+			await AddRandomDelayAsync(ServiceName.CallOrderGeneration, dto.RandomDelays).ConfigureAwait(false);
+			await AddPeriodicDelayAsync(ServiceName.ReleaseOrder, dto.PeriodicDelays).ConfigureAwait(false);
+			await AddPeriodicDelayAsync(ServiceName.Replenishment, dto.PeriodicDelays).ConfigureAwait(false);
+			await AddPeriodicDelayAsync(ServiceName.ParcelDispatch, dto.PeriodicDelays).ConfigureAwait(false);
 
 			return dto;
 		}

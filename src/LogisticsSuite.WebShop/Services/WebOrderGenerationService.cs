@@ -15,7 +15,7 @@ namespace LogisticsSuite.WebShop.Services
 		{
 		}
 
-		protected override string Name { get; } = nameof(WebOrderGenerationService).Replace("Service", string.Empty);
+		protected override ServiceName ServiceName { get; } = ServiceName.WebOrderGeneration;
 
 		protected override WebOrderReleasedMessage Create(int customerNo) => new WebOrderReleasedMessage
 		{

@@ -26,6 +26,8 @@ namespace LogisticsSuite.Warehouse.Services
 			this.parcelRepository = parcelRepository;
 		}
 
+		protected override ServiceName ServiceName { get; } = ServiceName.ParcelDispatch;
+
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
 			ParcelDto parcel = await parcelRepository.DeleteAsync().ConfigureAwait(false);

@@ -26,6 +26,8 @@ namespace LogisticsSuite.Erp.Services
 			this.messageBroker = messageBroker;
 		}
 
+		protected override ServiceName ServiceName { get; } = ServiceName.ReleaseOrder;
+
 		protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
 		{
 			OrderDto order = await backlogRepository.DeleteAsync().ConfigureAwait(false);

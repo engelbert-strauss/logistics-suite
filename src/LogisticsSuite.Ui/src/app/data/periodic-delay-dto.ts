@@ -1,4 +1,4 @@
 export class PeriodicDelayDto {
-  public service: string;
+  public serviceName: string;
   public value: number;
 }

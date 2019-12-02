@@ -13,8 +13,7 @@ namespace LogisticsSuite.Replenishment
 		public void Configure(IApplicationBuilder app)
 		{
 			app.UseMessaging()
-				.Register<ReplenishmentRequestedMessage, ReplenishmentRequestedMessageHandler>()
-				.Register<DelayChangeRequestedMessage, DelayChangeRequestedMessageHandler>();
+				.Register<ReplenishmentRequestedMessage, ReplenishmentRequestedMessageHandler>();
 			app.UseBatchServices();
 		}
 
@@ -22,7 +21,6 @@ namespace LogisticsSuite.Replenishment
 		public void ConfigureServices(IServiceCollection services) => services
 			.AddInfrastructure()
 			.AddTransient<ReplenishmentRequestedMessageHandler>()
-			.AddTransient<DelayChangeRequestedMessageHandler>()
 			.AddSingleton<IRequestRepository, RequestRepository>()
 			.AddBatchService<IReplenishmentService, ReplenishmentService>();
 	}

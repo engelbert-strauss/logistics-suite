@@ -16,8 +16,7 @@ export class NodeComponent implements OnInit {
   public ttb: any[] = [];
   public delay: string = null;
   @Input() public debugMode = false;
-  @Input() public serviceId: string = null;
-  @Input() public name: ServiceName;
+  @Input() public serviceName: ServiceName;
   @Input() public right: string = null;
   @Input() public left: string = null;
   @Input() public bottom: string = null;
@@ -60,31 +59,29 @@ export class NodeComponent implements OnInit {
       }
     }
 
-    if (this.serviceId) {
-      this.signalRService.onDelayChanged$.subscribe((delay) => {
-        let index = delay.randomDelays.findIndex((x) => x.service === this.serviceId);
+    this.signalRService.onDelayChanged$.subscribe((delay) => {
+      let index = delay.randomDelays.findIndex((x) => x.serviceName === ServiceName[this.serviceName]);
+
+      if (index >= 0) {
+        this.delay = `${delay.randomDelays[index].minValue} / ${delay.randomDelays[index].maxValue}`;
+      } else {
+        index = delay.periodicDelays.findIndex((x) => x.serviceName === ServiceName[this.serviceName]);
 
         if (index >= 0) {
-          this.delay = `${delay.randomDelays[index].minValue} / ${delay.randomDelays[index].maxValue}`;
-        } else {
-          index = delay.periodicDelays.findIndex((x) => x.service === this.serviceId);
-
-          if (index >= 0) {
-            this.delay = `${delay.periodicDelays[index].value}`;
-          }
+          this.delay = `${delay.periodicDelays[index].value}`;
         }
-      });
-
-      if (this.debugMode) {
-        this.delay = '100 / 500';
       }
+    });
+
+    if (this.debugMode) {
+      this.delay = '100 / 500';
     }
   }
 
   public onMinusClicked(): void {
     const event = new DelayChangedEvent();
 
-    event.serviceName = this.name;
+    event.serviceName = this.serviceName;
     event.operationMode = OperationMode.Decrease;
 
     this.delayChanged.emit(event);
@@ -93,14 +90,14 @@ export class NodeComponent implements OnInit {
   public onPlusClicked(): void {
     const event = new DelayChangedEvent();
 
-    event.serviceName = this.name;
+    event.serviceName = this.serviceName;
     event.operationMode = OperationMode.Increase;
 
     this.delayChanged.emit(event);
   }
 
-  public getName() {
-    return ServiceName[this.name];
+  public getServiceName() {
+    return ServiceName[this.serviceName];
   }
 
   private onLtrLinkAdded(message: any) {
