@@ -9,7 +9,7 @@ services:
         PROJECT: LogisticsSuite.Backend
     image: logisticssuite-backend:#{VERSION}#
     ports:
-      - '6000:80'
+      - '18870:80'
     depends_on:
       - red01
       - red02
@@ -116,7 +116,7 @@ services:
     build: ./src/LogisticsSuite.Ui
     image: logisticssuite-ui:#{VERSION}#
     ports:
-      - '6060:80'
+      - '18876:80'
     depends_on:
       - logisticssuite-backend
     deploy:

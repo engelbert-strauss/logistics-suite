@@ -3,7 +3,7 @@
   "profiles": {
     "LogisticsSuite.WebShop": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:6004",
+      "applicationUrl": "http://localhost:18874",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -3,7 +3,7 @@
   "profiles": {
     "LogisticsSuite.CallCenter": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:6005",
+      "applicationUrl": "http://localhost:18875",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

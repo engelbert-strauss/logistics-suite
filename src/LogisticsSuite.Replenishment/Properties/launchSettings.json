@@ -3,7 +3,7 @@
   "profiles": {
     "LogisticsSuite.Replenishment": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:6002",
+      "applicationUrl": "http://localhost:18872",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

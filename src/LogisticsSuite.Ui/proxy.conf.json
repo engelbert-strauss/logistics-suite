@@ -1,10 +1,10 @@
 {
   "/logisticssuite.backend": {
-    "target": "http://localhost:6000",
+    "target": "http://localhost:18870",
     "secure": false
   },
   "/logisticssuite.backend/ws": {
-    "target": "http://localhost:6000/ws",
+    "target": "http://localhost:18870/ws",
     "secure": false,
     "ws": true
   }

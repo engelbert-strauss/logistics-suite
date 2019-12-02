@@ -1,9 +1,9 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "LogisticsSuite.Dispatch": {
+    "LogisticsSuite.Backend": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:6000",
+      "applicationUrl": "http://localhost:18870",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

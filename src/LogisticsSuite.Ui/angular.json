@@ -62,7 +62,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "logistics-suite-ui:build"
+            "browserTarget": "logistics-suite-ui:build",
+            "host": "0.0.0.0",
+            "port": 18876
           },
           "configurations": {
             "production": {
