@@ -42,7 +42,7 @@ After you built the current state of the repository into local containers you ca
 ./build --target=deploy
 ~~~
 
-Now you can open the simple web ui of the _Logistics Suite_ on http://localhost:6060.
+Now you can open the simple web ui of the _Logistics Suite_ on http://localhost:18876.
 
 ### Stop
 
